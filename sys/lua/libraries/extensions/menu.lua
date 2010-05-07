@@ -3,7 +3,7 @@ local meta = CreateMetaTable("Menu")
 menu = {}
 menu.Table = {}
 
-function menu.New()
+function menu.Create()
 	local Table = meta
 	
 	Table.Control = {}
