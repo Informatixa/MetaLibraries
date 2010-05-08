@@ -74,8 +74,12 @@ function meta:Kick()
 	RunConsoleCommand("kick ".. self:UserID())
 end
 
-function meta:Kill()
-	RunConsoleCommand("killplayer ".. self:UserID())
+function meta:Died()
+	RunConsoleCommand("deathslap ".. self:UserID())
+end
+
+function meta:Died()
+	RunConsoleCommand("deathslap ".. self:UserID())
 end
 
 function meta:KillSilent()
