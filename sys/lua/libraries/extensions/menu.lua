@@ -66,7 +66,7 @@ function menu.Send(title, page)
 			if button == k then
 				hook.Remove("menu", "MenuCore")
 				v.func(ply)
-				return
+				break
 			end
 		end
 	end)

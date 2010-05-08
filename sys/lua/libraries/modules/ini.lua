@@ -1,4 +1,6 @@
-meta = CreateMeta("Ini")
+meta = CreateMetaTable("Ini")
+
+ini = {}
 
 function ini.Open(file)
 	local Table = meta
@@ -22,7 +24,6 @@ function meta:GetValue(block, key)
 	return ""
 end
 
--- Get Block.
 function meta:GetBlock(block)
 	local results = self:Parse()
 	
@@ -41,11 +42,11 @@ function meta:Parse()
 	local exploded = string.explode("\n", self.File)
 	
 	for k, v in pairs(exploded) do
-		if (string.sub(v, 1, 1) != "#") then
+		if (string.sub(v, 1, 1) ~= "#") then
 			local line = string.trim(v)
 			
-			if (line != "") then
-				if (string.sub(Line, 1, 1) == "[") then
+			if (line ~= "") then
+				if (string.sub(line, 1, 1) == "[") then
 					local _end = string.find(line, "%]")
 					
 					if (_end) then
@@ -57,8 +58,8 @@ function meta:Parse()
 				else
 					self.Results[current] = self.Results[current] or {}
 					
-					if (current != "") then
-						line = string.explode("=", Line)
+					if (current ~= "") then
+						line = string.explode("=", line)
 						
 						if (table.Count(line) == 2) then
 							local key = string.trim(line[1])
