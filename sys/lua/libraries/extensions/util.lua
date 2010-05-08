@@ -6,9 +6,9 @@ function util.tobool(val)
 end
 
 function convert.pos(tilex, tiley)
-	return Vector(math.floor(tilex * 32.3), math.floor(tiley * 40))
+	return Vector(math.floor(tilex * 32 + 16), math.floor(tiley * 32  + 16))
 end
 
 function convert.tile(x, y)
-	return Vector(math.floor(x / 32.3), math.floor(y / 32.3))
+	return Vector(math.floor(x / 32), math.floor(y / 32))
 end
