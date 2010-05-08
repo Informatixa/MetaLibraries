@@ -31,12 +31,10 @@ function chatcommand.Run(ply, message, sayteam)
 			end
 		end
 		
-		if ply:IsAdmin() then
-			for k, v in pairs(chatcommand.Table) do
-				if (cmd == k) then
-					v(ply, args, sayteam)
-					return true
-				end
+		for k, v in pairs(chatcommand.Table) do
+			if (cmd == k) then
+				v(ply, args, sayteam)
+				return true
 			end
 		end
 		
