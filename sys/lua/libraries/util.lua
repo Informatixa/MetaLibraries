@@ -21,12 +21,12 @@ function PrintMessage(type, text)
 	end
 end
 
-function Hud(ply, txt, x, y, align)
-	RunConsoleCommand("hudtxt ".. ply:UserID() .." \"".. txt .."\" ".. x .." ".. y .." ".. align)
+function Hud(id, txt, x, y, align)
+	RunConsoleCommand("hudtxt ".. id .." \"".. txt .."\" ".. x .." ".. y .." ".. align)
 end
 
-function ClearHud(ply)
-	RunConsoleCommand("hudtxt ".. ply:UserID() .." \"\" 0 0 0")
+function ClearHud(id)
+	RunConsoleCommand("hudtxt ".. id .." \"\" 0 0 0")
 end
 
 function Vector(posX, posY)
