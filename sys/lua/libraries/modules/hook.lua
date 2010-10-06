@@ -145,15 +145,15 @@ function hook.Core.serveraction(id, action)
 	if hook.GetTable()["serveraction"] ~= nil then
 		if action == 1 then
 			if hook.GetTable()["serveraction"]["f2"] ~= nil then
-				hook.GetTable()["serveraction"]["f2"](player.GetByID(id), action)
+				hook.GetTable()["serveraction"]["f2"](player.GetByID(id))
 			end
 		elseif action == 2 then
 			if hook.GetTable()["serveraction"]["f3"] ~= nil then
-				hook.GetTable()["serveraction"]["f3"](player.GetByID(id), action)
+				hook.GetTable()["serveraction"]["f3"](player.GetByID(id))
 			end
 		elseif action == 3 then
 			if hook.GetTable()["serveraction"]["f4"] ~= nil then
-				hook.GetTable()["serveraction"]["f4"](player.GetByID(id), action)
+				hook.GetTable()["serveraction"]["f4"](player.GetByID(id))
 			end
 		end
 	end
