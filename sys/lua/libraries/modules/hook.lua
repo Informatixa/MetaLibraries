@@ -493,3 +493,30 @@ function hook.Core.menu(id, title, button)
 	end
 end
 addhook("menu","hook.Core.menu")
+
+function hook.Core.rcon(cmds, id, ip, port)
+	if hook.GetTable()["rcon"] ~= nil then
+		for k, v in pairs(hook.GetTable()["rcon"]) do
+			return v.func(cmds, player.GetByID(id), ip, port)
+		end
+	end
+end
+addhook("rcon","hook.Core.rcon")
+
+function hook.Core.objectdamage(id, damage, ply)
+	if hook.GetTable()["objectdamage"] ~= nil then
+		for k, v in pairs(hook.GetTable()["objectdamage"]) do
+			return v.func(ents.GetByIndex(id), damage, player.GetByID(ply))
+		end
+	end
+end
+addhook("objectdamage","hook.Core.objectdamage")
+
+function hook.Core.objectkill(id, ply)
+	if hook.GetTable()["objectkill"] ~= nil then
+		for k, v in pairs(hook.GetTable()["objectkill"]) do
+			v.func(ents.GetByIndex(id), player.GetByID(ply))
+		end
+	end
+end
+addhook("objectkill","hook.Core.objectkill")

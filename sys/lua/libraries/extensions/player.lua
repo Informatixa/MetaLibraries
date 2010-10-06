@@ -74,14 +74,6 @@ function meta:Kick()
 	RunConsoleCommand("kick ".. self:UserID())
 end
 
-function meta:Died()
-	RunConsoleCommand("deathslap ".. self:UserID())
-end
-
-function meta:Died()
-	RunConsoleCommand("deathslap ".. self:UserID())
-end
-
 function meta:KillSilent()
 	RunConsoleCommand("customkill 0 \"\" ".. self:UserID())
 end
