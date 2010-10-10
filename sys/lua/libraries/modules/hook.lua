@@ -28,7 +28,7 @@ function hook.Core.log(text)
 	if hook.GetTable()["log"] ~= nil then
 		for k, v in pairs(hook.GetTable()["log"]) do
 			local r = v.func(text)
-			if not r == nil then
+			if r ~= nil then
 				return r
 			end
 		end
@@ -94,7 +94,7 @@ function hook.Core.team(id, team, look)
 	if hook.GetTable()["team"] ~= nil then
 		for k, v in pairs(hook.GetTable()["team"]) do
 			local r = v.func(player.GetByID(id), team, look)
-			if not r == nil then
+			if r ~= nil then
 				return r
 			end
 		end
@@ -106,7 +106,7 @@ function hook.Core.spawn(id)
 	if hook.GetTable()["spawn"] ~= nil then
 		for k, v in pairs(hook.GetTable()["spawn"]) do
 			local r = v.func(player.GetByID(id))
-			if not r == nil then
+			if r ~= nil then
 				return r
 			end
 		end
@@ -136,7 +136,7 @@ function hook.Core.name(id, oldname, newname)
 	if hook.GetTable()["name"] ~= nil then
 		for k, v in pairs(hook.GetTable()["name"]) do
 			local r = v.func(player.GetByID(id), oldname, newname)
-			if not r == nil then
+			if r ~= nil then
 				return r
 			end
 		end
@@ -176,7 +176,7 @@ function hook.Core.trigger(trigger, source)
 	if hook.GetTable()["trigger"] ~= nil then
 		for k, v in pairs(hook.GetTable()["trigger"]) do
 			local r = v.func(trigger, source)
-			if not r == nil then
+			if r ~= nil then
 				return r
 			end
 		end
@@ -188,7 +188,7 @@ function hook.Core.triggerentity(x, y)
 	if hook.GetTable()["triggerentity"] ~= nil then
 		for k, v in pairs(hook.GetTable()["triggerentity"]) do
 			local r = v.func(x, y)
-			if not r == nil then
+			if r ~= nil then
 				return r
 			end
 		end
@@ -200,7 +200,7 @@ function hook.Core.buy(id, weapon)
 	if hook.GetTable()["buy"] ~= nil then
 		for k, v in pairs(hook.GetTable()["buy"]) do
 			local r = v.func(player.GetByID(id), weapon)
-			if not r == nil then
+			if r ~= nil then
 				return r
 			end
 		end
@@ -212,7 +212,7 @@ function hook.Core.walkover(id, iid, type, ain, a, mode)
 	if hook.GetTable()["walkover"] ~= nil then
 		for k, v in pairs(hook.GetTable()["walkover"]) do
 			local r = v.func(player.GetByID(id), iid, type, ain, a, mode)
-			if not r == nil then
+			if r ~= nil then
 				return r
 			end
 		end
@@ -233,7 +233,7 @@ function hook.Core.drop(id, iid, type, ain, a, mode, x, y)
 	if hook.GetTable()["drop"] ~= nil then
 		for k, v in pairs(hook.GetTable()["drop"]) do
 			local r = v.func(player.GetByID(id), iid, type, ain, a, mode, x, y)
-			if not r == nil then
+			if r ~= nil then
 				return r
 			end
 		end
@@ -308,7 +308,7 @@ function hook.Core.hit(id, source, weapon, hpdmg, apdmg)
 	if hook.GetTable()["hit"] ~= nil then
 		for k, v in pairs(hook.GetTable()["hit"]) do
 			local r = v.func(player.GetByID(id), source, weapon, hpdmg, apdmg)
-			if not r == nil then
+			if r ~= nil then
 				return r
 			end
 		end
@@ -329,7 +329,7 @@ function hook.Core.die(victim, killer, weapon, x, y)
 	if hook.GetTable()["die"] ~= nil then
 		for k, v in pairs(hook.GetTable()["die"]) do
 			local r = v.func(player.GetByID(victim), player.GetByID(killer), weapon, x, y)
-			if not r == nil then
+			if r ~= nil then
 				return r
 			end
 		end
@@ -400,7 +400,7 @@ function hook.Core.radio(id, message)
 	if hook.GetTable()["radio"] ~= nil then
 		for k, v in pairs(hook.GetTable()["radio"]) do
 			local r = v.func(player.GetByID(id), message)
-			if not r == nil then
+			if r ~= nil then
 				return r
 			end
 		end
@@ -430,7 +430,7 @@ function hook.Core.buildattempt(id, type, x, y)
 	if hook.GetTable()["buildattempt"] ~= nil then
 		for k, v in pairs(hook.GetTable()["buildattempt"]) do
 			local r = v.func(player.GetByID(id), type, x, y)
-			if not r == nil then
+			if r ~= nil then
 				return r
 			end
 		end
@@ -442,7 +442,7 @@ function hook.Core.build(id, type, x, y, mode, objectid)
 	if hook.GetTable()["build"] ~= nil then
 		for k, v in pairs(hook.GetTable()["build"]) do
 			local r = v.func(player.GetByID(id), type, x, y, mode, ents.GetByIndex(objectid))
-			if not r == nil then
+			if r ~= nil then
 				return r
 			end
 		end
@@ -454,7 +454,7 @@ function hook.Core.flagtake(id, team, x, y)
 	if hook.GetTable()["flagtake"] ~= nil then
 		for k, v in pairs(hook.GetTable()["flagtake"]) do
 			local r = v.func(player.GetByID(id), team, x, y)
-			if not r == nil then
+			if r ~= nil then
 				return r
 			end
 		end
@@ -466,7 +466,7 @@ function hook.Core.flagcapture(id, team, x, y)
 	if hook.GetTable()["flagcapture"] ~= nil then
 		for k, v in pairs(hook.GetTable()["flagcapture"]) do
 			local r = v.func(player.GetByID(id), team, x, y)
-			if not r == nil then
+			if r ~= nil then
 				return r
 			end
 		end
@@ -478,7 +478,7 @@ function hook.Core.dominate(id, team, x, y)
 	if hook.GetTable()["dominate"] ~= nil then
 		for k, v in pairs(hook.GetTable()["dominate"]) do
 			local r = v.func(player.GetByID(id), team, x, y)
-			if not r == nil then
+			if r ~= nil then
 				return r
 			end
 		end
@@ -491,7 +491,7 @@ function hook.Core.bombplant(id, x, y)
 	if hook.GetTable()["bombplant"] ~= nil then
 		for k, v in pairs(hook.GetTable()["bombplant"]) do
 			local r = v.func(player.GetByID(id), x, y)
-			if not r == nil then
+			if r ~= nil then
 				return r
 			end
 		end
@@ -504,7 +504,7 @@ function hook.Core.bombdefuse(id)
 	if hook.GetTable()["bombdefuse"] ~= nil then
 		for k, v in pairs(hook.GetTable()["bombdefuse"]) do
 			local r = v.func(player.GetByID(id))
-			if not r == nil then
+			if r ~= nil then
 				return r
 			end
 		end
@@ -517,7 +517,7 @@ function hook.Core.bombexplode(id, x, y)
 	if hook.GetTable()["bombexplode"] ~= nil then
 		for k, v in pairs(hook.GetTable()["bombexplode"]) do
 			local r = v.func(player.GetByID(id), x, y)
-			if not r == nil then
+			if r ~= nil then
 				return r
 			end
 		end
@@ -558,7 +558,7 @@ function hook.Core.rcon(cmds, id, ip, port)
 	if hook.GetTable()["rcon"] ~= nil then
 		for k, v in pairs(hook.GetTable()["rcon"]) do
 			local r = v.func(cmds, player.GetByID(id), ip, port)
-			if not r == nil then
+			if r ~= nil then
 				return r
 			end
 		end
@@ -570,7 +570,7 @@ function hook.Core.objectdamage(id, damage, ply)
 	if hook.GetTable()["objectdamage"] ~= nil then
 		for k, v in pairs(hook.GetTable()["objectdamage"]) do
 			local r = v.func(ents.GetByIndex(id), damage, player.GetByID(ply))
-			if not r == nil then
+			if r ~= nil then
 				return r
 			end
 		end
