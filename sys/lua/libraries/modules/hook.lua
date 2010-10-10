@@ -27,7 +27,7 @@ function hook.Core.log(text)
 	--end
 	if hook.GetTable()["log"] ~= nil then
 		for k, v in pairs(hook.GetTable()["log"]) do
-			return v.func(text)
+			v.func(text)
 		end
 	end
 end
@@ -90,7 +90,7 @@ addhook("leave","hook.Core.leave")
 function hook.Core.team(id, team, look)
 	if hook.GetTable()["team"] ~= nil then
 		for k, v in pairs(hook.GetTable()["team"]) do
-			return v.func(player.GetByID(id), team, look)
+			v.func(player.GetByID(id), team, look)
 		end
 	end
 end
@@ -99,7 +99,7 @@ addhook("team","hook.Core.team")
 function hook.Core.spawn(id)
 	if hook.GetTable()["spawn"] ~= nil then
 		for k, v in pairs(hook.GetTable()["spawn"]) do
-			return v.func(player.GetByID(id))
+			v.func(player.GetByID(id))
 		end
 	end
 end
@@ -126,7 +126,7 @@ addhook("endround","hook.Core.endround")
 function hook.Core.name(id, oldname, newname)
 	if hook.GetTable()["name"] ~= nil then
 		for k, v in pairs(hook.GetTable()["name"]) do
-			return v.func(player.GetByID(id), oldname, newname)
+			v.func(player.GetByID(id), oldname, newname)
 		end
 	end
 end
@@ -163,7 +163,7 @@ addhook("serveraction","hook.Core.serveraction")
 function hook.Core.trigger(trigger, source)
 	if hook.GetTable()["trigger"] ~= nil then
 		for k, v in pairs(hook.GetTable()["trigger"]) do
-			return v.func(trigger, source)
+			v.func(trigger, source)
 		end
 	end
 end
@@ -172,7 +172,7 @@ addhook("trigger","hook.Core.trigger")
 function hook.Core.triggerentity(x, y)
 	if hook.GetTable()["triggerentity"] ~= nil then
 		for k, v in pairs(hook.GetTable()["triggerentity"]) do
-			return v.func(x, y)
+			v.func(x, y)
 		end
 	end
 end
@@ -181,7 +181,7 @@ addhook("triggerentity","hook.Core.triggerentity")
 function hook.Core.buy(id, weapon)
 	if hook.GetTable()["buy"] ~= nil then
 		for k, v in pairs(hook.GetTable()["buy"]) do
-			return v.func(player.GetByID(id), weapon)
+			v.func(player.GetByID(id), weapon)
 		end
 	end
 end
@@ -199,7 +199,7 @@ addhook("walkover","hook.Core.walkover")
 function hook.Core.collect(id, iid, type, ain, a, mode)
 	if hook.GetTable()["collect"] ~= nil then
 		for k, v in pairs(hook.GetTable()["collect"]) do
-			return v.func(player.GetByID(id), iid, type, ain, a, mode)
+			v.func(player.GetByID(id), iid, type, ain, a, mode)
 		end
 	end
 end
@@ -208,7 +208,7 @@ addhook("collect","hook.Core.collect")
 function hook.Core.drop(id, iid, type, ain, a, mode, x, y)
 	if hook.GetTable()["drop"] ~= nil then
 		for k, v in pairs(hook.GetTable()["drop"]) do
-			return v.func(player.GetByID(id), iid, type, ain, a, mode, x, y)
+			v.func(player.GetByID(id), iid, type, ain, a, mode, x, y)
 		end
 	end
 end
