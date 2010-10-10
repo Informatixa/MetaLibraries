@@ -211,7 +211,7 @@ function meta:Hud(id, txt, pos, align)
 end
 
 function meta:ClearHud(id)
-	RunConsoleCommand("hudtxt2 ".. self:UserID() .." ".. id .." \"\" 0 0 0")
+	RunConsoleCommand("hudtxt2 ".. self:UserID() .." ".. id .." \"\" 0 0 ".. TEXT_ALIGN_LEFT)
 end
 
 function meta:IsBot()
