@@ -18,6 +18,22 @@ function file.Read(filename)
 	return read
 end
 
+function file.Find(dir)
+	dir = string.replace(dir, "/", "\\")
+	local files = {}
+	for i in io.popen("dir ".. dir):lines() do
+		table.insert(files, string.sub(i, 37))
+	end
+	table.remove(files, 1)
+	table.remove(files, 1)
+	table.remove(files, 1)
+	table.remove(files, 1)
+	table.remove(files, 1)
+	table.remove(files, #files)
+	table.remove(files, #files)
+	return files
+end
+
 function file.Write(filename, text)
 	local file = assert(io.open("sys/lua/".. filename, "w"))
 	file:write(text)
