@@ -27,7 +27,10 @@ function hook.Core.log(text)
 	--end
 	if hook.GetTable()["log"] ~= nil then
 		for k, v in pairs(hook.GetTable()["log"]) do
-			v.func(text)
+			local r = v.func(text)
+			if not r == nil then
+				return r
+			end
 		end
 	end
 end
@@ -90,7 +93,10 @@ addhook("leave","hook.Core.leave")
 function hook.Core.team(id, team, look)
 	if hook.GetTable()["team"] ~= nil then
 		for k, v in pairs(hook.GetTable()["team"]) do
-			v.func(player.GetByID(id), team, look)
+			local r = v.func(player.GetByID(id), team, look)
+			if not r == nil then
+				return r
+			end
 		end
 	end
 end
@@ -99,7 +105,10 @@ addhook("team","hook.Core.team")
 function hook.Core.spawn(id)
 	if hook.GetTable()["spawn"] ~= nil then
 		for k, v in pairs(hook.GetTable()["spawn"]) do
-			v.func(player.GetByID(id))
+			local r = v.func(player.GetByID(id))
+			if not r == nil then
+				return r
+			end
 		end
 	end
 end
@@ -126,7 +135,10 @@ addhook("endround","hook.Core.endround")
 function hook.Core.name(id, oldname, newname)
 	if hook.GetTable()["name"] ~= nil then
 		for k, v in pairs(hook.GetTable()["name"]) do
-			v.func(player.GetByID(id), oldname, newname)
+			local r = v.func(player.GetByID(id), oldname, newname)
+			if not r == nil then
+				return r
+			end
 		end
 	end
 end
@@ -163,7 +175,10 @@ addhook("serveraction","hook.Core.serveraction")
 function hook.Core.trigger(trigger, source)
 	if hook.GetTable()["trigger"] ~= nil then
 		for k, v in pairs(hook.GetTable()["trigger"]) do
-			v.func(trigger, source)
+			local r = v.func(trigger, source)
+			if not r == nil then
+				return r
+			end
 		end
 	end
 end
@@ -172,7 +187,10 @@ addhook("trigger","hook.Core.trigger")
 function hook.Core.triggerentity(x, y)
 	if hook.GetTable()["triggerentity"] ~= nil then
 		for k, v in pairs(hook.GetTable()["triggerentity"]) do
-			v.func(x, y)
+			local r = v.func(x, y)
+			if not r == nil then
+				return r
+			end
 		end
 	end
 end
@@ -181,7 +199,10 @@ addhook("triggerentity","hook.Core.triggerentity")
 function hook.Core.buy(id, weapon)
 	if hook.GetTable()["buy"] ~= nil then
 		for k, v in pairs(hook.GetTable()["buy"]) do
-			v.func(player.GetByID(id), weapon)
+			local r = v.func(player.GetByID(id), weapon)
+			if not r == nil then
+				return r
+			end
 		end
 	end
 end
@@ -190,7 +211,10 @@ addhook("buy","hook.Core.buy")
 function hook.Core.walkover(id, iid, type, ain, a, mode)
 	if hook.GetTable()["walkover"] ~= nil then
 		for k, v in pairs(hook.GetTable()["walkover"]) do
-			v.func(player.GetByID(id), iid, type, ain, a, mode)
+			local r = v.func(player.GetByID(id), iid, type, ain, a, mode)
+			if not r == nil then
+				return r
+			end
 		end
 	end
 end
@@ -208,7 +232,10 @@ addhook("collect","hook.Core.collect")
 function hook.Core.drop(id, iid, type, ain, a, mode, x, y)
 	if hook.GetTable()["drop"] ~= nil then
 		for k, v in pairs(hook.GetTable()["drop"]) do
-			v.func(player.GetByID(id), iid, type, ain, a, mode, x, y)
+			local r = v.func(player.GetByID(id), iid, type, ain, a, mode, x, y)
+			if not r == nil then
+				return r
+			end
 		end
 	end
 end
@@ -280,7 +307,10 @@ addhook("movetile","hook.Core.movetile")
 function hook.Core.hit(id, source, weapon, hpdmg, apdmg)
 	if hook.GetTable()["hit"] ~= nil then
 		for k, v in pairs(hook.GetTable()["hit"]) do
-			return v.func(player.GetByID(id), source, weapon, hpdmg, apdmg)
+			local r = v.func(player.GetByID(id), source, weapon, hpdmg, apdmg)
+			if not r == nil then
+				return r
+			end
 		end
 	end
 end
@@ -298,7 +328,10 @@ addhook("kill","hook.Core.kill")
 function hook.Core.die(victim, killer, weapon, x, y)
 	if hook.GetTable()["die"] ~= nil then
 		for k, v in pairs(hook.GetTable()["die"]) do
-			return v.func(player.GetByID(victim), player.GetByID(killer), weapon, x, y)
+			local r = v.func(player.GetByID(victim), player.GetByID(killer), weapon, x, y)
+			if not r == nil then
+				return r
+			end
 		end
 	end
 end
@@ -366,7 +399,10 @@ addhook("sayteam","hook.Core.sayteam")
 function hook.Core.radio(id, message)
 	if hook.GetTable()["radio"] ~= nil then
 		for k, v in pairs(hook.GetTable()["radio"]) do
-			return v.func(player.GetByID(id), message)
+			local r = v.func(player.GetByID(id), message)
+			if not r == nil then
+				return r
+			end
 		end
 	end
 end
@@ -393,7 +429,10 @@ addhook("vote","hook.Core.vote")
 function hook.Core.buildattempt(id, type, x, y)
 	if hook.GetTable()["buildattempt"] ~= nil then
 		for k, v in pairs(hook.GetTable()["buildattempt"]) do
-			return v.func(player.GetByID(id), type, x, y)
+			local r = v.func(player.GetByID(id), type, x, y)
+			if not r == nil then
+				return r
+			end
 		end
 	end
 end
@@ -402,7 +441,10 @@ addhook("buildattempt","hook.Core.buildattempt")
 function hook.Core.build(id, type, x, y, mode, objectid)
 	if hook.GetTable()["build"] ~= nil then
 		for k, v in pairs(hook.GetTable()["build"]) do
-			return v.func(player.GetByID(id), type, x, y, mode, ents.GetByIndex(objectid))
+			local r = v.func(player.GetByID(id), type, x, y, mode, ents.GetByIndex(objectid))
+			if not r == nil then
+				return r
+			end
 		end
 	end
 end
@@ -411,7 +453,10 @@ addhook("build","hook.Core.build")
 function hook.Core.flagtake(id, team, x, y)
 	if hook.GetTable()["flagtake"] ~= nil then
 		for k, v in pairs(hook.GetTable()["flagtake"]) do
-			return v.func(player.GetByID(id), team, x, y)
+			local r = v.func(player.GetByID(id), team, x, y)
+			if not r == nil then
+				return r
+			end
 		end
 	end
 end
@@ -420,7 +465,10 @@ addhook("flagtake","hook.Core.flagtake")
 function hook.Core.flagcapture(id, team, x, y)
 	if hook.GetTable()["flagcapture"] ~= nil then
 		for k, v in pairs(hook.GetTable()["flagcapture"]) do
-			return v.func(player.GetByID(id), team, x, y)
+			local r = v.func(player.GetByID(id), team, x, y)
+			if not r == nil then
+				return r
+			end
 		end
 	end
 end
@@ -429,7 +477,10 @@ addhook("flagcapture","hook.Core.flagcapture")
 function hook.Core.dominate(id, team, x, y)
 	if hook.GetTable()["dominate"] ~= nil then
 		for k, v in pairs(hook.GetTable()["dominate"]) do
-			return v.func(player.GetByID(id), team, x, y)
+			local r = v.func(player.GetByID(id), team, x, y)
+			if not r == nil then
+				return r
+			end
 		end
 	end
 end
@@ -439,7 +490,10 @@ addhook("dominate","hook.Core.dominate")
 function hook.Core.bombplant(id, x, y)
 	if hook.GetTable()["bombplant"] ~= nil then
 		for k, v in pairs(hook.GetTable()["bombplant"]) do
-			return v.func(player.GetByID(id), x, y)
+			local r = v.func(player.GetByID(id), x, y)
+			if not r == nil then
+				return r
+			end
 		end
 	end
 end
@@ -449,7 +503,10 @@ addhook("bombplant","hook.Core.bombplant")
 function hook.Core.bombdefuse(id)
 	if hook.GetTable()["bombdefuse"] ~= nil then
 		for k, v in pairs(hook.GetTable()["bombdefuse"]) do
-			return v.func(player.GetByID(id))
+			local r = v.func(player.GetByID(id))
+			if not r == nil then
+				return r
+			end
 		end
 	end
 end
@@ -459,7 +516,10 @@ addhook("bombdefuse","hook.Core.bombdefuse")
 function hook.Core.bombexplode(id, x, y)
 	if hook.GetTable()["bombexplode"] ~= nil then
 		for k, v in pairs(hook.GetTable()["bombexplode"]) do
-			return v.func(player.GetByID(id), x, y)
+			local r = v.func(player.GetByID(id), x, y)
+			if not r == nil then
+				return r
+			end
 		end
 	end
 end
@@ -497,7 +557,10 @@ addhook("menu","hook.Core.menu")
 function hook.Core.rcon(cmds, id, ip, port)
 	if hook.GetTable()["rcon"] ~= nil then
 		for k, v in pairs(hook.GetTable()["rcon"]) do
-			return v.func(cmds, player.GetByID(id), ip, port)
+			local r = v.func(cmds, player.GetByID(id), ip, port)
+			if not r == nil then
+				return r
+			end
 		end
 	end
 end
@@ -506,7 +569,10 @@ addhook("rcon","hook.Core.rcon")
 function hook.Core.objectdamage(id, damage, ply)
 	if hook.GetTable()["objectdamage"] ~= nil then
 		for k, v in pairs(hook.GetTable()["objectdamage"]) do
-			return v.func(ents.GetByIndex(id), damage, player.GetByID(ply))
+			local r = v.func(ents.GetByIndex(id), damage, player.GetByID(ply))
+			if not r == nil then
+				return r
+			end
 		end
 	end
 end
