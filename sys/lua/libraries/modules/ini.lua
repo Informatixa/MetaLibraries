@@ -2,12 +2,28 @@ meta = CreateMetaTable("Ini")
 
 ini = {}
 
-function ini.Open(file)
+function ini.Open(filename)
 	local Table = meta
 	
-	Table.File = file.Read(file) or ""
+	Table.Name = filename
+	Table.File = file.Read(filename) or ""
 	
 	return Table
+end
+
+function meta:Save()
+	local results = self:Parse()
+	local text = ""
+
+	for k, v in pairs(results) do
+		text += "[".. k .."]"
+		
+		for k2, v2 in pairs(v) do
+			text += k2 .."=".. v2
+		end
+	end
+	
+	file.Write(self.Name, text)
 end
 
 function meta:GetValue(block, key)
