@@ -147,7 +147,7 @@ function meta:Tile()
 end
 
 function meta:GetTile()
-	return self:Pos()
+	return self:Tile()
 end
 
 function meta:SetTile(tilex, tiley)
