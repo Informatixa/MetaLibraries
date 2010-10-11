@@ -1,10 +1,10 @@
-local meta = CreateMetaTable("Iteam")
+local meta = CreateMetaTable("Item")
 
 item = {}
 
 function item.GetByIndex(id)
 	if id == 0 and not tobool(_item(id, "exists")) then return nil end
-	local Table = meta
+	local Table = CopyMetaTable("Item")
 	Table.ID = id
 	return Table
 end

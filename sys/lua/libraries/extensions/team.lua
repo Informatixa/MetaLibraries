@@ -23,6 +23,18 @@ function team.GetPlayers(index)
 	return players
 end
 
+function team.PrintMessage(index, type, message)
+	for _, ply in pairs(team.GetPlayers(index)) do
+		ply:PrintMessage(type, message)
+	end
+end
+
+function team.ChatPrint(index, message)
+	for _, ply in pairs(team.GetPlayers(index)) do
+		ply:ChatPrint(message)
+	end
+end
+
 function team.NumPlayers(index)
 	return #team.GetPlayers(index)
 end

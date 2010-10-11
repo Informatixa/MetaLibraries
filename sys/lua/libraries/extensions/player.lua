@@ -4,7 +4,7 @@ player = {}
 
 function player.GetByID(id)
 	if id == 0 or not tobool(_player(id, "exists")) then return nil end
-	local Table = meta
+	local Table = CopyMetaTable("Player")
 	Table.ID = id
 	return Table
 end

@@ -3,7 +3,7 @@ meta = CreateMetaTable("Ini")
 ini = {}
 
 function ini.Open(filename)
-	local Table = meta
+	local Table = CopyMetaTable("Ini")
 	
 	Table.Name = filename
 	Table.File = file.Read(filename) or ""
@@ -16,10 +16,10 @@ function meta:Save()
 	local text = ""
 
 	for k, v in pairs(results) do
-		text += "[".. k .."]"
+		text = text .."[".. k .."]\r\n"
 		
 		for k2, v2 in pairs(v) do
-			text += k2 .."=".. v2
+			text = text .. k2 .."=".. v2 .."\r\n"
 		end
 	end
 	
@@ -40,6 +40,18 @@ function meta:GetValue(block, key)
 	return ""
 end
 
+function meta:SetValue(block, key, value)
+	local results = self:Parse()
+	
+	for k, v in pairs(results) do
+		if (k == block) then
+			for k2, v2 in pairs(v) do
+				if (k2 == key) then v2 = value end
+			end
+		end
+	end
+end
+
 function meta:GetBlock(block)
 	local results = self:Parse()
 	
@@ -48,6 +60,14 @@ function meta:GetBlock(block)
 	end
 	
 	return {}
+end
+
+function meta:SetBlock(block, content)
+	local results = self:Parse()
+	
+	for k, v in pairs(results) do
+		if (k == block) then v = content end
+	end
 end
 
 function meta:Parse()

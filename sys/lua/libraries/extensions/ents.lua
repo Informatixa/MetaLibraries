@@ -6,7 +6,7 @@ local _class = {["barricade"] = 1, ["barbed_wire"] = 2, ["wall_i"] = 3, ["wall_i
 local _mode = {["he"] = 1, ["kevlar+helm"] = 2, ["xm1014"] = 3, ["p90"] = 4, ["m4a1"] = 5, ["awp"] = 6}
 
 function ents.Create(class)
-	local Table = _meta
+	local Table = CopyMetaTable("CreateEntity")
 	if type(class) == "string" then class = _class[class:lower()] end
 	if class == nil then class = 10 end
 	Table.Class = class
@@ -21,7 +21,7 @@ end
 
 function ents.GetByIndex(index)
 	if index == 0 or not tobool(object(index, "exists")) then return nil end
-	local Table = meta
+	local Table = CopyMetaTable("Entity")
 	Table.ID = index
 	return Table
 end

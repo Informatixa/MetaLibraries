@@ -8,6 +8,14 @@ function CreateMetaTable(name)
 	return Obj
 end
 
+function CopyMetaTable(name)
+	local obj = {}
+	local meta = FindMetaTable(name)
+	setmetatable(obj, MetaTable)
+	for n, v in pairs(meta) do obj[n] = v end
+	return obj
+end
+
 function FindMetaTable(name)
 	return MetaTable[name]
 end

@@ -3,7 +3,7 @@ local meta = CreateMetaTable("Weapon")
 weapon = {}
 
 function weapon.GetByType(type)
-	local Table = meta
+	local Table = CopyMetaTable("Weapon")
 	Table.ID = type
 	return Table
 end
