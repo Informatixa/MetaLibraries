@@ -6,6 +6,8 @@ _menu = menu
 
 RunConsoleCommand = parse
 
+print("©000255000Loading MetaLibraries...")
+
 dofile("sys/lua/libraries/util.lua")
 dofile("sys/lua/libraries/enum/text_align.lua")
 dofile("sys/lua/libraries/enum/teams.lua")
@@ -29,3 +31,5 @@ dofile("sys/lua/libraries/extensions/item.lua")
 dofile("sys/lua/libraries/extensions/player_auth.lua")
 dofile("sys/lua/libraries/extensions/team.lua")
 dofile("sys/lua/libraries/extensions/menu.lua")
+
+print("©000255000MetaLibraries loaded!")
