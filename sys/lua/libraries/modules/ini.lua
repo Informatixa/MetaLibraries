@@ -97,12 +97,12 @@ function meta:Parse()
 					if (current ~= "") then
 						line = string.explode("=", line)
 						
-						if (table.Count(line) == 2) then
+						if (table.count(line) == 2) then
 							local key = string.trim(line[1])
 							local value = string.trim(line[2])
 							
 							self.Results[current][key] = value
-						elseif (table.Count(line) == 1) then
+						elseif (table.count(line) == 1) then
 							local value = string.trim(line[1])
 							
 							self.Results[current][#self.Results[current] + 1] = value
