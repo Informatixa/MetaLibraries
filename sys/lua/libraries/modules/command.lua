@@ -19,14 +19,16 @@ function chatcommand.Run(ply, message, sayteam)
 	
 	if message:sub(1, 1) == "!" then
 		if cmd == "credit" then
-			ply.PrintMessage(HUD_PRINTCENTER, "©255255000Programing by")
-			ply.PrintMessage(HUD_PRINTCENTER, "©050150255Informatixa and MetaGamerz Team")
+			ply:PrintMessage(HUD_PRINTCENTER, "©255255000Programing by")
+			ply:PrintMessage(HUD_PRINTCENTER, "©050150255Informatixa and MetaStudios Team")
 			return true
 		end
 		
+		table.remove(args, 1)
+		
 		for _, v in pairs(args) do
 			if v == nil or v == "" then
-				ply.ChatPrint("©255255000The argument is null!")
+				ply:ChatPrint("©255255000The argument is null!")
 				return true
 			end
 		end

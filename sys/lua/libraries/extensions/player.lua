@@ -70,8 +70,12 @@ function meta:Ban()
 	end
 end
 
-function meta:Kick()
-	RunConsoleCommand("kick ".. self:UserID())
+function meta:Kick(reason)
+	if reason == nil then
+		RunConsoleCommand("kick ".. self:UserID())
+	else
+		RunConsoleCommand("kick ".. self:UserID() .."\"".. reason .."\"")
+	end
 end
 
 function meta:KillSilent()

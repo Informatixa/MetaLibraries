@@ -196,10 +196,10 @@ function hook.Core.triggerentity(x, y)
 end
 addhook("triggerentity","hook.Core.triggerentity")
 
-function hook.Core.buy(id, weapon)
+function hook.Core.buy(id, wpn)
 	if hook.GetTable()["buy"] ~= nil then
 		for k, v in pairs(hook.GetTable()["buy"]) do
-			local r = v.func(player.GetByID(id), weapon)
+			local r = v.func(player.GetByID(id), weapon.GetByType(wpn))
 			if r ~= nil then
 				return r
 			end
@@ -277,10 +277,10 @@ function hook.Core.attack2(id, mode)
 end
 addhook("attack2","hook.Core.attack2")
 
-function hook.Core.projectile(id, weapon, x, y)
+function hook.Core.projectile(id, wpn, x, y)
 	if hook.GetTable()["projectile"] ~= nil then
 		for k, v in pairs(hook.GetTable()["projectile"]) do
-			v.func(player.GetByID(id), weapon, x, y)
+			v.func(player.GetByID(id), weapon.GetByType(wpn), x, y)
 		end
 	end
 end
@@ -304,10 +304,10 @@ function hook.Core.movetile(id, x, y)
 end
 addhook("movetile","hook.Core.movetile")
 
-function hook.Core.hit(id, source, weapon, hpdmg, apdmg)
+function hook.Core.hit(id, source, wpn, hpdmg, apdmg)
 	if hook.GetTable()["hit"] ~= nil then
 		for k, v in pairs(hook.GetTable()["hit"]) do
-			local r = v.func(player.GetByID(id), source, weapon, hpdmg, apdmg)
+			local r = v.func(player.GetByID(id), player.GetByID(source), weapon.GetByType(wpn), hpdmg, apdmg)
 			if r ~= nil then
 				return r
 			end
@@ -316,19 +316,19 @@ function hook.Core.hit(id, source, weapon, hpdmg, apdmg)
 end
 addhook("hit","hook.Core.hit")
 
-function hook.Core.kill(killer, victim, weapon, x, y)
+function hook.Core.kill(killer, victim, wpn, x, y)
 	if hook.GetTable()["kill"] ~= nil then
 		for k, v in pairs(hook.GetTable()["kill"]) do
-			v.func(player.GetByID(killer), player.GetByID(victim), weapon, x, y)
+			v.func(player.GetByID(killer), player.GetByID(victim), weapon.GetByType(wpn), x, y)
 		end
 	end
 end
 addhook("kill","hook.Core.kill")
 
-function hook.Core.die(victim, killer, weapon, x, y)
+function hook.Core.die(victim, killer, wpn, x, y)
 	if hook.GetTable()["die"] ~= nil then
 		for k, v in pairs(hook.GetTable()["die"]) do
-			local r = v.func(player.GetByID(victim), player.GetByID(killer), weapon, x, y)
+			local r = v.func(player.GetByID(victim), player.GetByID(killer), weapon.GetByType(wpn), x, y)
 			if r ~= nil then
 				return r
 			end
