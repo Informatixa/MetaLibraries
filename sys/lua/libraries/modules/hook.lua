@@ -25,6 +25,9 @@ function hook.Core.log(text)
 	--if string.find(text, "Lua: Adding function '[^*]' to hook '[^*]'") ~= nil then
 		--return 1
 	--end
+	if string.find(text, "IMG-DEBUG: create") ~= nil or string.find(text, "IMG-DEBUG: free") ~= nil then
+		return 1
+	end
 	if hook.GetTable()["log"] ~= nil then
 		for k, v in pairs(hook.GetTable()["log"]) do
 			local r = v.func(text)

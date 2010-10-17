@@ -11,12 +11,7 @@ function meta:SetNetworked(name, value)
 	player.Networked[self:UserID()][name] = value
 end
 
-function PlayerSpawn(ply)
+function PlayerJoin(ply)
 	player.Networked[ply:UserID()] = {}
 end
-hook.Add("join", "PlayerNetworkedSpawn", PlayerSpawn)
-
-function PlayerLeave(ply, reason)
-	player.Networked[ply:UserID()] = nil
-end
-hook.Add("leave", "PlayerNetworkedLeave", PlayerLeave)
+hook.Add("join", "PlayerNetworkedJoin", PlayerJoin)

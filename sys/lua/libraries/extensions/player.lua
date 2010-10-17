@@ -71,7 +71,7 @@ function meta:Ban()
 end
 
 function meta:Kick(reason)
-	if reason == nil then
+	if reason == nil or reason == "" then
 		RunConsoleCommand("kick ".. self:UserID())
 	else
 		RunConsoleCommand("kick ".. self:UserID() .."\"".. reason .."\"")
