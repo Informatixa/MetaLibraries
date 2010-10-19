@@ -9,7 +9,7 @@ function menu.Create()
 	Table.Control = {}
 	Table.Control.Settings = {}
 	Table.Control.Buttons = {{}}
-	Table.Control.Close = {Title = title, Page = 1}
+	Table.Control.Close = {Title = nil, Page = 1}
 	
 	Table.Settings = {}
 	Table.Settings.Player = 0
@@ -51,16 +51,25 @@ function menu.Send(title, page)
 	end
 	
 	hook.Add("menu", "MenuCore", function(ply, title, button)
-		local Table = menu.Find(title:sub(1, string.find(title, "(Page [^*])") - 3))
-		if Table == nil then return end
+		local Table = nil
 		
 		if string.find(title, "(Page [^*])") ~= nil then
+			Table = menu.Find(title:sub(1, string.find(title, "(Page [^*])") - 3))
 			page = string.replace(title:sub(string.find(title, "(Page [^*])")), "Page ", "")
 		else
+			Table = menu.Find(title)
 			page = 1
 		end
 		
+		if Table == nil then return end
+		
 		Table.Control.Settings = {Previous = page - 1, Next = page + 1}
+			
+		if button == 0 and Table.Control.Close["Title"] ~= nil and Table.Control.Close["Title"] ~= title then
+			hook.Remove("menu", "MenuCore")
+			menu.Send(Table.Control.Close["Title"], Table.Control.Close["Page"])
+			return
+		end
 		
 		for k, v in pairs(Table.Control.Buttons[tonumber(page)]) do
 			if button == k then
@@ -83,7 +92,7 @@ end
 function meta:SetControlClose(title, page)
 	if menu.Find(title) == nil then title = nil end
 	if page == nil or page < 1 or menu.Find(title).Control.Buttons[page] == nil then page = 1 end
-	Table.Control.Close = {Title = title, Page = page}
+	self.Control.Close = {Title = title, Page = page}
 end
 
 function meta:ButtonAdd(text, func, extra)
