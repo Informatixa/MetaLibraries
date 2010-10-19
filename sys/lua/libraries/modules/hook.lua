@@ -12,7 +12,7 @@ function hook.Add(event_name, name, func)
 	end
 	
 	if event_name == "serveraction" then
-		table.insert(hook.Table[event_name], name, func)
+		hook.GetTable()[event_name][name] = func
 	else
 		table.insert(hook.Table[event_name], {name = name, func = func})
 	end
@@ -20,7 +20,7 @@ end
 
 function hook.Remove(event_name, name)
 	if event_name == "serveraction" then
-		table.remove(hook.GetTable()[event_name], name)
+		hook.GetTable()[event_name][name] = function() end
 	else
 		for k, v in pairs(hook.GetTable()[event_name]) do
 			if v.name == name then
