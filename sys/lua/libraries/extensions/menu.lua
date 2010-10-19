@@ -1,4 +1,5 @@
 local meta = CreateMetaTable("Menu")
+local _meta = CreateMetaTable("ButtonData")
 
 menu = {}
 menu.Table = {}
@@ -10,7 +11,7 @@ function menu.Create()
 	Table.Control.Settings = {}
 	Table.Control.Buttons = {{}}
 	Table.Control.Close = {Title = nil, Page = 1}
-	
+		
 	Table.Settings = {}
 	Table.Settings.Player = 0
 	Table.Settings.Title = "N/A"
@@ -74,12 +75,27 @@ function menu.Send(title, page)
 		for k, v in pairs(Table.Control.Buttons[tonumber(page)]) do
 			if button == k then
 				hook.Remove("menu", "MenuCore")
-				v.func(ply)
+				v.func(ply, Table.Control.Buttons[page][k]["data"])
 				break
 			end
 		end
 	end)
 end
+
+function menu.ButtonData(menu, page, button)
+	local Table = CopyMetaTable("ButtonData")
+	
+	Table.Menu = menu
+	Table.Page = page
+	Table.Button = button
+	
+	return Table
+end
+
+function _meta:Data(data)
+	table.insert(self.Menu.Control.Buttons[self.Page][self.Button]["data"], data)
+end
+
 
 function meta:SetPlayer(ply)
 	self.Settings.Player = ply:UserID()
@@ -102,24 +118,26 @@ function meta:ButtonAdd(text, func, extra)
 	
 	if extra == nil then extra = "" end
 	if #self.Control.Buttons[#self.Control.Buttons] < 9 then
-		table.insert(self.Control.Buttons[#self.Control.Buttons], {text = tostring(text), func = func, extra = tostring(extra)})
+		table.insert(self.Control.Buttons[#self.Control.Buttons], {text = tostring(text), func = func, extra = tostring(extra), data = {}})
 	else
 		table.insert(self.Control.Buttons, {})
 		local page = self.Control.Buttons[#self.Control.Buttons - 1]
 		if #self.Control.Buttons == 2 then
-			table.insert(page, {text = "Next Page ->", func = function(ply) menu.Send(self.Settings.Title, self.Control.Settings.Next) end, extra = "Page ".. tostring(#self.Control.Buttons)})
-			table.insert(self.Control.Buttons[#self.Control.Buttons], {text = page[9].text, func = page[9].func, extra = page[9].extra})
+			table.insert(page, {text = "Next Page ->", func = function(ply) menu.Send(self.Settings.Title, self.Control.Settings.Next) end, extra = "Page ".. tostring(#self.Control.Buttons), data = {}})
+			table.insert(self.Control.Buttons[#self.Control.Buttons], {text = page[9].text, func = page[9].func, extra = page[9].extra, data = {}})
 			table.remove(page, 9)
 		else
-			table.insert(page, {text = "<- Previous Page", func = function(ply) menu.Send(self.Settings.Title, self.Control.Settings.Previous) end, extra = "Page ".. tostring(#self.Control.Buttons - 2)})
-			table.insert(page, {text = "Next Page ->", func = function(ply) menu.Send(self.Settings.Title, self.Control.Settings.Next) end, extra = "Page ".. tostring(#self.Control.Buttons)})
-			table.insert(self.Control.Buttons[#self.Control.Buttons], {text = page[8].text, func = page[8].func, extra = page[8].extra})
-			table.insert(self.Control.Buttons[#self.Control.Buttons], {text = page[9].text, func = page[9].func, extra = page[9].extra})
+			table.insert(page, {text = "<- Previous Page", func = function(ply) menu.Send(self.Settings.Title, self.Control.Settings.Previous) end, extra = "Page ".. tostring(#self.Control.Buttons - 2), data = {}})
+			table.insert(page, {text = "Next Page ->", func = function(ply) menu.Send(self.Settings.Title, self.Control.Settings.Next) end, extra = "Page ".. tostring(#self.Control.Buttons), data = {}})
+			table.insert(self.Control.Buttons[#self.Control.Buttons], {text = page[8].text, func = page[8].func, extra = page[8].extra, data = {}})
+			table.insert(self.Control.Buttons[#self.Control.Buttons], {text = page[9].text, func = page[9].func, extra = page[9].extra, data = {}})
 			table.remove(page, 8)
 			table.remove(page, 8)
 		end
-		table.insert(self.Control.Buttons[#self.Control.Buttons], {text = tostring(text), func = func, extra = tostring(extra)})
+		table.insert(self.Control.Buttons[#self.Control.Buttons], {text = tostring(text), func = func, extra = tostring(extra), data = {}})
 	end
+	
+	return menu.ButtonData(self, #self.Control.Buttons, #self.Control.Buttons[#self.Control.Buttons])
 end
 
 function meta:Send()

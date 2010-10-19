@@ -11,3 +11,7 @@ end
 function game.GetMap()
 	return Map.GetName()
 end
+
+function game.ChangeMap(map)
+	RunConsoleCommand("changelevel ".. map)
+end
