@@ -15,3 +15,7 @@ end
 function game.ChangeMap(map)
 	RunConsoleCommand("changelevel ".. map)
 end
+
+function game.ChangeGamemode(index)
+	RunConsoleCommand("sv_gamemode ".. index)
+end
