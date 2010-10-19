@@ -46,6 +46,10 @@ function player.GetHumans()
 	return Table
 end
 
+function player.UnBan(text)
+	RunConsoleCommand("unban ".. text)
+end
+
 function meta:UserID()
 	return self.ID
 end
@@ -64,10 +68,14 @@ end
 
 function meta:Ban()
 	if self:UsgnID() == 0 then
-		RunConsoleCommand("banip ".. self:UserID() .." ".. self:IPAddress())
+		RunConsoleCommand("banip ".. self:IPAddress())
 	else
-		RunConsoleCommand("banusgn ".. self:UserID() .." ".. self:UsgnID())
+		RunConsoleCommand("banusgn ".. self:UsgnID())
 	end
+end
+
+function meta:BanName()
+	RunConsoleCommand("banname ".. self:Name())
 end
 
 function meta:Kick(reason)
@@ -78,8 +86,10 @@ function meta:Kick(reason)
 	end
 end
 
-function meta:KillSilent()
-	RunConsoleCommand("customkill 0 \"\" ".. self:UserID())
+function meta:Kill(killer, weapon)
+	if killer == nil then killer = 0 end
+	if weapon == nil then weapon = "" end
+	RunConsoleCommand("customkill ".. killer:UserID() .." \"".. weapon:Name() .."\" ".. self:UserID())
 end
 
 function meta:SetHealth(amount)
