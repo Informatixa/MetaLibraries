@@ -32,10 +32,10 @@ end
 
 function hook.Core.log(text)
 	--if string.find(text, "Lua: Adding function '[^*]' to hook '[^*]'") ~= nil then
-		--return 1
+		--return NOLOG
 	--end
 	if string.find(text, "IMG-DEBUG: create") ~= nil or string.find(text, "IMG-DEBUG: free") ~= nil then
-		return 1
+		return HOOK_NOLOG
 	end
 	if hook.GetTable()["log"] ~= nil then
 		for k, v in pairs(hook.GetTable()["log"]) do
@@ -378,15 +378,18 @@ addhook("usebutton","hook.Core.usebutton")
 
 function hook.Core.say(id, message)
 	local ply = player.GetByID(id)
-	if chatcommand.Run(ply, message, false) then return 1 end
+	if chatcommand.Run(ply, message, false) then return HOOK_NOSAY end
 	
 	if message == "rank" then
-		return 0
+		return HOOK_SAY
 	end 
 	
 	if hook.GetTable()["say"] ~= nil then
 		for k, v in pairs(hook.GetTable()["say"]) do
-			return v.func(ply, message)
+			local r = v.func(ply, message)
+			if r ~= nil then
+				return r
+			end
 		end
 	end
 end
@@ -394,15 +397,18 @@ addhook("say","hook.Core.say")
 
 function hook.Core.sayteam(id, message)
 	local ply = player.GetByID(id)
-	if chatcommand.Run(ply, message, true) then return 1 end
+	if chatcommand.Run(ply, message, true) then return HOOK_NOSAYTEAM end
 	
 	if message == "rank" then
-		return 0
+		return HOOK_SAYTEAM
 	end 
 	
 	if hook.GetTable()["sayteam"] ~= nil then
 		for k, v in pairs(hook.GetTable()["sayteam"]) do
-			return v.func(ply, message)
+			local r = v.func(ply, message)
+			if r ~= nil then
+				return r
+			end
 		end
 	end
 end

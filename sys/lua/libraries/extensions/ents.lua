@@ -2,8 +2,8 @@ local _meta = CreateMetaTable("CreateEntity")
 local meta = CreateMetaTable("Entity")
 
 ents = {}
-local _class = {["barricade"] = 1, ["barbed_wire"] = 2, ["wall_i"] = 3, ["wall_ii"] = 4, ["wall_iii"] = 5, ["gate_field"] = 6, ["dispenser"] = 7, ["turret"] = 8, ["supply"] = 9, ["construction_site"] = 10, ["dual_turret"] = 11, ["triple_turret"] = 12, ["teleporter_entrance"] = 13, ["teleporter_exit"] = 14, ["mine"] = 20, ["maser_mine"] = 21, ["portal_red"] = 22, ["portal_blue"] = 23}
-local _mode = {["he"] = 1, ["kevlar"] = 2, ["xm1014"] = 3, ["p90"] = 4, ["m4a1"] = 5, ["awp"] = 6, ["armor"] = 7, ["rpg"] = 8}
+local _class = {["barricade"] = ENTITY_BARRICADE, ["barbed_wire"] = ENTITY_BARDED_WIRE, ["wall_i"] = ENTITY_WALL_I, ["wall_ii"] = ENTITY_WALL_II, ["wall_iii"] = ENTITY_WALL_III, ["gate_field"] = ENTITY_GATE_FIELD, ["dispenser"] = ENTITY_DISPENSER, ["turret"] = ENTITY_TURRET, ["supply"] = ENTITY_SUPPLY, ["construction_site"] = ENTITY_CONSTRUCTION, ["dual_turret"] = ENTITY_DUAL_TURRET, ["triple_turret"] = ENTITY_TRIPLE_TURRET, ["teleporter_entrance"] = ENTITY_TELEPORTER_ENTRANCE, ["teleporter_exit"] = ENTITY_TELEPORTER_EXIT, ["mine"] = ENTITY_MINE, ["laser_mine"] = ENTITY_LASER_MINE, ["portal_red"] = ENTITY_PORTAL_RED, ["portal_blue"] = ENTITY_PORTAL_BLUE}
+local _mode = {["grenades"] = SUPPLY_GRENADES, ["kevlarhelm"] = SUPPLY_KEVLARHELM, ["shotguns"] = SUPPLY_SHOTGUNS, ["smgs"] = SUPPLY_SMGS, ["rifles"] = SUPPLY_RIFLES, ["sniperrifles"] = SUPPLY_SNIPERRIFLES, ["armor"] = SUPPLY_ARMOR, ["rpglauncher"] = SUPPLY_RPGLAUNCHER}
 
 function ents.Create(class)
 	local Table = CopyMetaTable("CreateEntity")

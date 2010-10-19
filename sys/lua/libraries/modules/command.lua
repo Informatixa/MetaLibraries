@@ -73,6 +73,6 @@ end
 function comcommand.Parse(text)
 	local cmd = string.explode(" ", text)[1]
 	local args = string.explode(" ", text:sub(cmd:len() + 1))
-	if comcommand.Run(cmd, args) then return 2 else return 0 end
+	if comcommand.Run(cmd, args) then return HOOK_NOPARSE else return HOOK_PARSE end
 end
 addhook("parse", "comcommand.Parse")
