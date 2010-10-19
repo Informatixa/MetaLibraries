@@ -4,7 +4,7 @@ menu = {}
 menu.Table = {}
 
 function menu.Create()
-	local Table = meta
+	local Table = CopyMetaTable("Menu")
 	
 	Table.Control = {}
 	Table.Control.Settings = {}

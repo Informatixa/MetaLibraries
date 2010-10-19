@@ -23,6 +23,7 @@ function meta:Save()
 		end
 	end
 	
+	file.Delete(self.Name)
 	file.Write(self.Name, text)
 end
 
@@ -43,13 +44,7 @@ end
 function meta:SetValue(block, key, value)
 	local results = self:Parse()
 	
-	for k, v in pairs(results) do
-		if (k == block) then
-			for k2, v2 in pairs(v) do
-				if (k2 == key) then v2 = value end
-			end
-		end
-	end
+	results[block][key] = value
 end
 
 function meta:GetBlock(block)
@@ -65,9 +60,7 @@ end
 function meta:SetBlock(block, content)
 	local results = self:Parse()
 	
-	for k, v in pairs(results) do
-		if (k == block) then v = content end
-	end
+	results[block] = content
 end
 
 function meta:Parse()

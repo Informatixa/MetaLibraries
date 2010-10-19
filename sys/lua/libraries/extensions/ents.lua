@@ -3,7 +3,7 @@ local meta = CreateMetaTable("Entity")
 
 ents = {}
 local _class = {["barricade"] = 1, ["barbed_wire"] = 2, ["wall_i"] = 3, ["wall_ii"] = 4, ["wall_iii"] = 5, ["gate_field"] = 6, ["dispenser"] = 7, ["turret"] = 8, ["supply"] = 9, ["construction_site"] = 10, ["dual_turret"] = 11, ["triple_turret"] = 12, ["teleporter_entrance"] = 13, ["teleporter_exit"] = 14, ["mine"] = 20, ["maser_mine"] = 21, ["portal_red"] = 22, ["portal_blue"] = 23}
-local _mode = {["he"] = 1, ["kevlar+helm"] = 2, ["xm1014"] = 3, ["p90"] = 4, ["m4a1"] = 5, ["awp"] = 6}
+local _mode = {["he"] = 1, ["kevlar"] = 2, ["xm1014"] = 3, ["p90"] = 4, ["m4a1"] = 5, ["awp"] = 6, ["armor"] = 7, ["rpg"] = 8}
 
 function ents.Create(class)
 	local Table = CopyMetaTable("CreateEntity")
