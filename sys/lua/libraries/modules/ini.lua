@@ -16,11 +16,13 @@ function meta:Save()
 	local text = ""
 
 	for k, v in pairs(results) do
-		text = text .."[".. k .."]\r\n"
+		text = text .."[".. tostring(k) .."]\r"
 		
 		for k2, v2 in pairs(v) do
-			text = text .. k2 .."=".. v2 .."\r\n"
+			text = text .. tostring(k2) .."=".. tostring(v2) .."\r"
 		end
+		
+		text = text .."\n"
 	end
 	
 	file.Delete(self.Name)
@@ -43,6 +45,10 @@ end
 
 function meta:SetValue(block, key, value)
 	local results = self:Parse()
+	
+	if results[block] == nil then
+		results[block] = {}
+	end
 	
 	results[block][key] = value
 end

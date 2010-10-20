@@ -260,3 +260,41 @@ end
 	end
 	return Table
 end]]
+
+function meta:CloseItems(ranger)
+	local Table = {}
+	
+	if self:Alive() then
+		if ranger == nil or ranger == 0 then ranger = 1 end
+		for _, v in pairs(closeitems(self:UserID(), ranger)) do
+			table.insert(Table, item.GetByIndex(v))
+		end
+		return Table
+	end
+	
+	return Table
+end
+
+function meta:IsIdle()
+	return _player(self:UserID(), "idle")
+end
+
+function meta:Angle()
+	return _player(self:UserID(), "rot")
+end
+
+function meta:HasNightvision()
+	return _player(self:UserID(), "nightvision")
+end
+
+function meta:HasDefusekit()
+	return _player(self:UserID(), "defusekit")
+end
+
+function meta:HasBomb()
+	return _player(self:UserID(), "bomb")
+end
+
+function meta:HasFlag()
+	return _player(self:UserID(), "flag")
+end

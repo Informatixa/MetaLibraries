@@ -57,11 +57,12 @@ function meta:Pos()
 	return Vector(_item(self:ID(), "x"), _item(self:ID(), "y"))
 end
 
-function item.GetByType(type)
+function item.FindByType(type)
+	local Table = {}
 	for _, v in pairs(weapon.GetAll()) do
 		if v:Type() == type then
-			return v
+			table.insert(Table, v)
 		end
 	end
-	return nil
+	return Table
 end

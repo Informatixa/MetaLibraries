@@ -28,6 +28,10 @@ function map.GetDomPoints()
 	return _map("mission_dompoints")
 end
 
+function map.GetBotNodes()
+	return _map("botnodes")
+end
+
 function map.IsNoBuying()
 	return _map("nobuying")
 end
@@ -38,4 +42,8 @@ end
 
 function map.GetTeleporters()
 	return _map("teleporters")
+end
+
+function map.InEntity(tilex, tiley)
+	return tobool(entity(tilex, tiley, "exists"))
 end
