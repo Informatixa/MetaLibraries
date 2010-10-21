@@ -79,6 +79,8 @@ end
 addhook("always","hook.Core.always")
 
 function hook.Core.join(id)
+	player.GetByID(id):PrintMessage(HUD_PRINTCENTER, "©000128128The server uses the module MetaLibraries developed by MetaStudios.")
+	
 	if hook.GetTable()["join"] ~= nil then
 		for k, v in pairs(hook.GetTable()["join"]) do
 			v.func(player.GetByID(id))
@@ -453,7 +455,7 @@ addhook("buildattempt","hook.Core.buildattempt")
 function hook.Core.build(id, type, x, y, mode, objectid)
 	if hook.GetTable()["build"] ~= nil then
 		for k, v in pairs(hook.GetTable()["build"]) do
-			local r = v.func(player.GetByID(id), type, x, y, mode, ents.GetByIndex(objectid))
+			local r = v.func(player.GetByID(id), type, x, y, mode, object.GetByIndex(objectid))
 			if r ~= nil then
 				return r
 			end
@@ -581,7 +583,7 @@ addhook("rcon","hook.Core.rcon")
 function hook.Core.objectdamage(id, damage, ply)
 	if hook.GetTable()["objectdamage"] ~= nil then
 		for k, v in pairs(hook.GetTable()["objectdamage"]) do
-			local r = v.func(ents.GetByIndex(id), damage, player.GetByID(ply))
+			local r = v.func(object.GetByIndex(id), damage, player.GetByID(ply))
 			if r ~= nil then
 				return r
 			end
@@ -593,7 +595,7 @@ addhook("objectdamage","hook.Core.objectdamage")
 function hook.Core.objectkill(id, ply)
 	if hook.GetTable()["objectkill"] ~= nil then
 		for k, v in pairs(hook.GetTable()["objectkill"]) do
-			v.func(ents.GetByIndex(id), player.GetByID(ply))
+			v.func(object.GetByIndex(id), player.GetByID(ply))
 		end
 	end
 end
