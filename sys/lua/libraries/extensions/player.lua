@@ -243,7 +243,7 @@ function meta:IsListenServerHost()
 	return false
 end
 
-function meta:GetWeapon()
+function meta:GetActiveWeapon()
 	if self:Alive() then
 		return weapon.GetByType(_player(self:UserID(), "weapontype"))
 	else
@@ -251,7 +251,7 @@ function meta:GetWeapon()
 	end
 end
 
---[[function meta:GetWeapons()
+function meta:GetWeapons()
 	local Table = {}
 	if self:Alive() then
 		for _, v in pairs(playerweapons(self:UserID())) do
@@ -259,7 +259,7 @@ end
 		end
 	end
 	return Table
-end]]
+end
 
 function meta:CloseItems(ranger)
 	local Table = {}
@@ -267,7 +267,7 @@ function meta:CloseItems(ranger)
 	if self:Alive() then
 		if ranger == nil or ranger == 0 then ranger = 1 end
 		for _, v in pairs(closeitems(self:UserID(), ranger)) do
-			table.insert(Table, item.GetByIndex(v))
+			table.insert(Table, item.GetByID(v))
 		end
 		return Table
 	end
@@ -297,4 +297,70 @@ end
 
 function meta:HasFlag()
 	return _player(self:UserID(), "flag")
+end
+
+function meta:HasWeapon(index)
+	if self:Alive() then
+		if type(index) == "string" then index = tonumber(index) end
+		for k, v in pairs(self:GetWeapons()) do
+			if index == v:Type() then
+				return true
+			end
+		end
+		
+		return false
+	else
+		return false
+	end
+end
+
+function meta:StripWeapon(index)
+	if self:Alive() then
+		if index == nil then index = self:GetActiveWeapon():Type() end
+		if type(index) == "string" then index = tonumber(index) end
+		if self:HasWeapon(index) then
+			RunConsoleCommand("strip ".. self:UserID() .." ".. index)
+		end
+	end
+end
+
+function meta:StripWeapons()
+	if self:Alive() then
+		for k, v in pairs(self:GetWeapons()) do
+			self:StripWeapon(v:Type())
+		end
+	end
+end
+
+function meta:DropWeapon(index)
+	if self:Alive() then
+		if index == nil then index = self:GetActiveWeapon():Type() end
+		if type(index) == "string" then index = tonumber(index) end
+		if self:HasWeapon(index) then
+			self:StripWeapon(index)
+			RunConsoleCommand("spawnitem ".. index .." ".. self:Tile().x .." ".. self:Tile().y)
+		end
+	end
+end
+
+function meta:SelectWeapon(index)
+	if self:Alive() then
+		if type(index) == "string" then index = tonumber(index) end
+		if self:HasWeapon(index) then
+			RunConsoleCommand("setweapon ".. self:UserID() .." ".. index)
+		end
+	end
+end
+
+function meta:Give(index)
+	if self:Alive() then
+		if not self:HasWeapon(index) and (index ~= ITEM_REDFLAG or index ~= ITEM_BLUEFLAG) then
+			RunConsoleCommand("equip ".. self:UserID() .." ".. index)
+			self:SelectWeapon(index)
+		end
+	end
+end
+
+function meta:Look()
+	return _player(self:UserID(), "look")
 end
