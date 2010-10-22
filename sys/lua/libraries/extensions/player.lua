@@ -86,10 +86,20 @@ function meta:Kick(reason)
 	end
 end
 
-function meta:Kill(killer, weapon)
-	if killer == nil then killer = 0 end
-	if weapon == nil then weapon = "" end
-	RunConsoleCommand("customkill ".. killer:UserID() .." \"".. weapon:Name() .."\" ".. self:UserID())
+function meta:Kill(killer, wpn)
+	if killer == nil or type(killer) ~= "table" or player.GetByID(killer:UserID()) == nil then killer = 0 else killer = killer:UserID() end
+	if wpn == nil or weapon.GetByType(wpn:Type()) == nil then
+		wpn = weapon.GetByType(ITEM_KNIFE):Name() 
+	else
+		if type(wpn) ~= "string" then
+			wpn = wpn:Name()
+		end
+	end
+	RunConsoleCommand("customkill ".. killer .." \"".. wpn .."\" ".. self:UserID())
+end
+
+function meta:Die()
+	RunConsoleCommand("killplayer ".. self:UserID())
 end
 
 function meta:SetHealth(amount)
