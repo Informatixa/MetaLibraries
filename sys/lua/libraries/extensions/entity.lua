@@ -5,7 +5,7 @@ entity = {}
 function entity.GetByPos(tilex, tiley)
 	if not map.InEntity(tilex, tiley) then return nil end
 	local Table = CopyMetaTable("Entity")
-	Table.Pos = Vector(tilex, tiley)
+	Table.Index = Vector(tilex, tiley)
 	return Table
 end
 
@@ -43,7 +43,7 @@ function entity.Random(type, ai, i0)
 end
 
 function meta:Pos()
-	return self.Pos
+	return self.Index
 end
 
 function meta:Type()

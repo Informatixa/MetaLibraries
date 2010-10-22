@@ -3,47 +3,47 @@ local meta = CreateMetaTable("Object")
 
 object = {}
 
-function object.Create(class)
+function object.Create(type)
 	local Table = CopyMetaTable("CreateObject")
-	if class == nil then class = 10 end
-	Table.Class = class
+	if type == nil then type = 10 end
+	Table.Type = type
 	Table.Pos = Vector(0, 0)
 	Table.Ang = 0
 	Table.Mode = 0
-	if class == 9 then Table.Mode = 1 end
+	if type == 9 then Table.Mode = 1 end
 	Table.Team = 0
 	Table.Player = 0
 	return Table
 end
 
-function object.GetByIndex(index)
+function object.GetByID(index)
 	if index == 0 or not tobool(_object(index, "exists")) then return nil end
 	local Table = CopyMetaTable("Object")
-	Table.ID = index
+	Table.Index = index
 	return Table
 end
 
 function object.GetAll()
 	local Table = {}
 	for k, v in pairs(_object(0, "table")) do
-		table.insert(Table, object.GetByIndex(v))
+		table.insert(Table, object.GetByID(v))
 	end
 	return Table
 end
 
 function meta:GetID()
-	return self.ID
+	return self.Index
 end
 
-function meta:GetClass()
-	return _object(self.ID, "type")
+function meta:GetType()
+	return _object(self:GetID(), "type")
 end
-function meta:GetClassName()
-	return _object(self.ID, "typename")
+function meta:GetTypeName()
+	return _object(self:GetID(), "typename")
 end
 
 function meta:GetPos()
-	return Vector(_object(self.ID, "tilex"), _object(self.ID, "tiley"))
+	return Vector(_object(self:GetID(), "tilex"), _object(self:GetID(), "tiley"))
 end
 
 function _meta:SetPos(tilex, tiley)
@@ -51,7 +51,7 @@ function _meta:SetPos(tilex, tiley)
 end
 
 function meta:GetTeam()
-	return _object(self.ID, "team")
+	return _object(self:GetID(), "team")
 end
 
 function _meta:SetTeam(index)
@@ -59,11 +59,11 @@ function _meta:SetTeam(index)
 end
 
 function meta:GetHealth()
-	return _object(self.ID, "health")
+	return _object(self:GetID(), "health")
 end
 
 function meta:GetAng()
-	return _object(self.ID, "rot")
+	return _object(self:GetID(), "rot")
 end
 
 function _meta:SetAng(ang)
@@ -71,7 +71,7 @@ function _meta:SetAng(ang)
 end
 
 function meta:GetOwner()
-	return player.GetByID(_object(self.ID, "player"))
+	return player.GetByID(_object(self:GetID(), "player"))
 end
 
 function _meta:SetOwner(index)
@@ -93,20 +93,20 @@ function object.GetByPos(tilex, tiley)
 end
 
 function _meta:Spawn()
-	RunConsoleCommand("spawnobject ".. self.Class .." ".. self.Pos.x .." ".. self.Pos.y .." ".. self.Ang .." ".. self.Mode .." ".. self.Team .." ".. self.Player)
-	self.ID = object.GetByPos(self.Pos.x, self.Pos.y):GetID()
-	if self.ID ~= nil then
+	RunConsoleCommand("spawnobject ".. self.Type .." ".. self.Pos.x .." ".. self.Pos.y .." ".. self.Ang .." ".. self.Mode .." ".. self.Team .." ".. self.Player)
+	self.Index = object.GetByPos(self.Pos.x, self.Pos.y):GetID()
+	if self.Index ~= nil then
 		function self:GetID()
-			return self.ID
+			return self.Index
 		end
 	end
 end
 
-function object.FindByClass(class)
-	if class == nil then class = 10 end
+function object.FindByType(type)
+	if type == nil then type = 10 end
 	local Table = {}
 	for k, v in pairs(object.GetAll()) do
-		if v:GetClass() == class then
+		if v:GetType() == type then
 			table.insert(Table, v)
 		end
 	end

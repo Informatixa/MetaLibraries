@@ -3,13 +3,14 @@ local meta = CreateMetaTable("Weapon")
 weapon = {}
 
 function weapon.GetByType(type)
+	if itemtype(type, "name") == "" then return nil end
 	local Table = CopyMetaTable("Weapon")
-	Table.ID = type
+	Table.Index = type
 	return Table
 end
 
 function meta:Type()
-	return self.ID
+	return self.Index
 end
 
 function meta:Name()

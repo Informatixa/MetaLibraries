@@ -2,23 +2,23 @@ local meta = CreateMetaTable("Item")
 
 item = {}
 
-function item.GetByIndex(id)
-	if id == 0 and not tobool(_item(id, "exists")) then return nil end
+function item.GetByID(index)
+	if index == 0 or not tobool(_item(index, "exists")) then return nil end
 	local Table = CopyMetaTable("Item")
-	Table.ID = id
+	Table.Index = index
 	return Table
 end
 
 function item.GetAll()
 	local Table = {}
 	for _, v in pairs(_item(0, "table")) do
-		table.insert(Table, weapon.GetByIndex(v))
+		table.insert(Table, item.GetByID(v))
 	end
 	return Table
 end
 
 function meta:ID()
-	return self.ID
+	return self.Index
 end
 
 function meta:Name()

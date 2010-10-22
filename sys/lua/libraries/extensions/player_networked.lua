@@ -7,7 +7,7 @@ function meta:GetNetworked(name)
 	if player.Networked[self:UserID()][name] ~= nil then
 		return player.Networked[self:UserID()][name]
 	else
-		return ""
+		return nil
 	end
 end
 

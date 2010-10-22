@@ -219,7 +219,7 @@ addhook("buy","hook.Core.buy")
 function hook.Core.walkover(id, iid, type, ain, a, mode)
 	if hook.GetTable()["walkover"] ~= nil then
 		for k, v in pairs(hook.GetTable()["walkover"]) do
-			local r = v.func(player.GetByID(id), iid, type, ain, a, mode)
+			local r = v.func(player.GetByID(id), item.GetByID(iid), type, ain, a, mode)
 			if r ~= nil then
 				return r
 			end
@@ -231,7 +231,7 @@ addhook("walkover","hook.Core.walkover")
 function hook.Core.collect(id, iid, type, ain, a, mode)
 	if hook.GetTable()["collect"] ~= nil then
 		for k, v in pairs(hook.GetTable()["collect"]) do
-			v.func(player.GetByID(id), iid, type, ain, a, mode)
+			v.func(player.GetByID(id), item.GetByID(iid), type, ain, a, mode)
 		end
 	end
 end
@@ -240,7 +240,7 @@ addhook("collect","hook.Core.collect")
 function hook.Core.drop(id, iid, type, ain, a, mode, x, y)
 	if hook.GetTable()["drop"] ~= nil then
 		for k, v in pairs(hook.GetTable()["drop"]) do
-			local r = v.func(player.GetByID(id), iid, type, ain, a, mode, x, y)
+			local r = v.func(player.GetByID(id), item.GetByID(iid), type, ain, a, mode, x, y)
 			if r ~= nil then
 				return r
 			end
@@ -455,7 +455,7 @@ addhook("buildattempt","hook.Core.buildattempt")
 function hook.Core.build(id, type, x, y, mode, objectid)
 	if hook.GetTable()["build"] ~= nil then
 		for k, v in pairs(hook.GetTable()["build"]) do
-			local r = v.func(player.GetByID(id), type, x, y, mode, object.GetByIndex(objectid))
+			local r = v.func(player.GetByID(id), type, x, y, mode, object.GetByID(objectid))
 			if r ~= nil then
 				return r
 			end
@@ -583,7 +583,7 @@ addhook("rcon","hook.Core.rcon")
 function hook.Core.objectdamage(id, damage, ply)
 	if hook.GetTable()["objectdamage"] ~= nil then
 		for k, v in pairs(hook.GetTable()["objectdamage"]) do
-			local r = v.func(object.GetByIndex(id), damage, player.GetByID(ply))
+			local r = v.func(object.GetByID(id), damage, player.GetByID(ply))
 			if r ~= nil then
 				return r
 			end
@@ -595,7 +595,7 @@ addhook("objectdamage","hook.Core.objectdamage")
 function hook.Core.objectkill(id, ply)
 	if hook.GetTable()["objectkill"] ~= nil then
 		for k, v in pairs(hook.GetTable()["objectkill"]) do
-			v.func(object.GetByIndex(id), player.GetByID(ply))
+			v.func(object.GetByID(id), player.GetByID(ply))
 		end
 	end
 end
