@@ -45,5 +45,5 @@ function map.GetTeleporters()
 end
 
 function map.InEntity(tilex, tiley)
-	return tobool(entity(tilex, tiley, "exists"))
+	return tobool(_entity(tilex, tiley, "exists"))
 end
