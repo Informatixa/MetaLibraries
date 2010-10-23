@@ -5,7 +5,9 @@ _map = map
 _menu = menu
 _object = object
 _player = player
+_table = table
 _tile = tile
+_string = string
 
 RunConsoleCommand = parse
 
@@ -41,6 +43,7 @@ dofile("sys/lua/libraries/extensions/player.lua")
 dofile("sys/lua/libraries/extensions/player_networked.lua")
 dofile("sys/lua/libraries/extensions/player_auth.lua")
 dofile("sys/lua/libraries/extensions/team.lua")
+dofile("sys/lua/libraries/extensions/tile.lua")
 dofile("sys/lua/libraries/extensions/weapon.lua")
 
 print("©000255000MetaLibraries loaded!")

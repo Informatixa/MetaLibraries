@@ -1,5 +1,3 @@
-tablex = table
-
 function table.inherit(t, base)
 	for k, v in pairs(base) do 
 		if (t[k] == nil) then t[k] = v end
