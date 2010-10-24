@@ -47,3 +47,11 @@ end
 function map.InEntity(tilex, tiley)
 	return tobool(_entity(tilex, tiley, "exists"))
 end
+
+function map.InObject(tilex, tiley)
+	if object.GetByPos(tilex, tiley) ~= nil then
+		return true
+	else
+		return false
+	end
+end
