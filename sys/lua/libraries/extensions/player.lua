@@ -10,11 +10,19 @@ function player.GetByID(id)
 end
 
 function player.GetAll()
-	local Table = {}
+	local players = {}
 	for _, v in pairs(_player(0, "table")) do
-		table.insert(Table, player.GetByID(v))
+		table.insert(players, player.GetByID(v))
 	end
-	return Table
+	return players
+end
+
+function player.GetAllLiving()
+	local players = {}
+	for _, v in pairs(_player(0, "tableliving")) do
+		table.insert(players, player.GetByID(v))
+	end
+	return players
 end
 
 function player.GetByUsgnID(usgn)
@@ -27,23 +35,23 @@ function player.GetByUsgnID(usgn)
 end
 
 function player.GetBots()
-	local Table = {}
+	local bots = {}
 	for _, ply in pairs(player.GetAll()) do
 		if ply:IsBot() then
-			table.insert(Table, ply)
+			table.insert(bots, ply)
 		end
 	end
-	return Table
+	return bots
 end
 
 function player.GetHumans()
-	local Table = {}
+	local players = {}
 	for _, ply in pairs(player.GetAll()) do
 		if not ply:IsBot() then
-			table.insert(Table, ply)
+			table.insert(players, ply)
 		end
 	end
-	return Table
+	return players
 end
 
 function player.UnBan(text)

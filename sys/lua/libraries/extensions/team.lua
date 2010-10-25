@@ -15,10 +15,17 @@ end
 
 function team.GetPlayers(index)
 	local players = {}
-	for id, ply in pairs(player.GetAll()) do
-		if tostring(ply.Team()) == tostring(index) then
-			table.insert(players, ply)
-		end
+	for _, v in pairs(_player(0, "team".. index)) do
+		table.insert(players, player.GetByID(v))
+	end
+	return players
+end
+
+function team.GetPlayersLiving(index)
+	if index < 1 or index > 2 then return 0 end
+	local players = {}
+	for _, v in pairs(_player(0, "team".. index .."living")) do
+		table.insert(players, player.GetByID(v))
 	end
 	return players
 end
@@ -37,6 +44,11 @@ end
 
 function team.NumPlayers(index)
 	return #team.GetPlayers(index)
+end
+
+function team.NumPlayersLiving(index)
+	if index < 1 or index > 2 then return 0 end
+	return #team.GetPlayersLiving(index)
 end
 
 function team.Joinable(index)
