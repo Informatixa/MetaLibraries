@@ -43,7 +43,7 @@ function PlayerJoin(ply)
 	
 	if SinglePlayer() or ply:IsListenServerHost() then
 		ply:SetUserGroup("superadmin")
-		ply:ChatMessage("Hey '".. ply:Name() .."' - You're in the 'superadmin' group on this server.")
+		ply:ChatPrint("Hey '".. ply:Name() .."' - You're in the 'superadmin' group on this server.")
 		return
 	end
 	
@@ -58,6 +58,6 @@ function PlayerJoin(ply)
 	end
 	
 	ply:SetUserGroup(admin.group)
-	ply:ChatMessage("Hey '".. admin.name .."' - You're in the '".. admin.group .."' group on this server.")
+	ply:ChatPrint("Hey '".. admin.name .."' - You're in the '".. admin.group .."' group on this server.")
 end
 hook.Add("join", "PlayerAuthJoin", PlayerJoin)
