@@ -41,13 +41,9 @@ function PlayerJoin(ply)
 	local usgnid = ply:UsgnID()
 	local ipaddress = ply:IPAddress()
 	
-	for k, v in pairs(Admins) do
-		print(k ..": '".. v.name .."' -- '".. v.group.."'")
-	end
-	
 	if SinglePlayer() or ply:IsListenServerHost() then
 		ply:SetUserGroup("superadmin")
-		ply:PrintMessage(HUD_PRINTTALK, "Hey '".. admin.name .."' - You're in the '".. admin.group .."' group on this server.")
+		ply:ChatMessage("Hey '".. admin.name .."' - You're in the '".. admin.group .."' group on this server.")
 		return
 	end
 	
@@ -62,6 +58,6 @@ function PlayerJoin(ply)
 	end
 	
 	ply:SetUserGroup(admin.group)
-	ply:PrintMessage(HUD_PRINTTALK, "Hey '".. admin.name .."' - You're in the '".. admin.group .."' group on this server.")
+	ply:ChatMessage("Hey '".. admin.name .."' - You're in the '".. admin.group .."' group on this server.")
 end
 hook.Add("join", "PlayerAuthJoin", PlayerJoin)
