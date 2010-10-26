@@ -2,9 +2,13 @@ local meta = CreateMetaTable("Menu")
 local _meta = CreateMetaTable("ButtonData")
 
 menu = {}
-menu.Table = {}
+player.Menu = {}
 
-function menu.Create()
+hook.Add("join", "PlayerMenuJoin", function(ply)
+	player.Menu[ply:UserID()] = {}
+end)
+
+function menu.Create(ply)
 	local Table = CopyMetaTable("Menu")
 	
 	Table.Control = {}
@@ -13,16 +17,16 @@ function menu.Create()
 	Table.Control.Close = {Title = nil, Page = 1}
 		
 	Table.Settings = {}
-	Table.Settings.Player = 0
+	Table.Settings.Player = ply
 	Table.Settings.Title = "N/A"
 	
-	table.insert(menu.Table, Table)
+	table.insert(player.Menu[ply:UserID()], Table)
 	
 	return Table
 end
 
-function menu.Find(title)
-	for _, v in pairs(menu.Table) do
+function menu.Find(ply, title)
+	for _, v in pairs(player.Menu[ply:UserID()]) do
 		if v.Settings.Title == title then
 			return v
 		end
@@ -31,13 +35,13 @@ function menu.Find(title)
 	return nil
 end
 
-function menu.Send(title, page)
-	local Table = menu.Find(title)
+function menu.Send(ply, title, page)
+	local Table = menu.Find(ply, title)
 	if Table == nil then return end
 	if page == nil or page < 1 or Table.Control.Buttons[page] == nil then page = 1 end
 	
 	if #Table.Control.Buttons > 1  and Table.Control.Buttons[#Table.Control.Buttons][#Table.Control.Buttons[#Table.Control.Buttons]].text ~= "<- Previous Page" then
-		table.insert(Table.Control.Buttons[#Table.Control.Buttons], {text = "<- Previous Page", func = function(ply) menu.Send(Table.Settings.Title, Table.Control.Settings.Previous) end, extra = "Page ".. tostring(#Table.Control.Buttons - 1)})
+		table.insert(Table.Control.Buttons[#Table.Control.Buttons], {text = "<- Previous Page", func = function(ply) menu.Send(Table.Settings.Player, Table.Settings.Title, Table.Control.Settings.Previous) end, extra = "Page ".. tostring(#Table.Control.Buttons - 1)})
 	end
 	
 	local text = ""
@@ -46,19 +50,19 @@ function menu.Send(title, page)
 	end
 	
 	if #Table.Control.Buttons > 1 then 
-		_menu(Table.Settings.Player, Table.Settings.Title .." (Page ".. page ..")".. text)
+		_menu(Table.Settings.Player:UserID(), Table.Settings.Title .." (Page ".. page ..")".. text)
 	else
-		_menu(Table.Settings.Player, Table.Settings.Title .. text)
+		_menu(Table.Settings.Player:UserID(), Table.Settings.Title .. text)
 	end
 	
 	hook.Add("menu", "MenuCore", function(ply, title, button)
 		local Table = nil
 		
 		if string.find(title, "(Page [^*])") ~= nil then
-			Table = menu.Find(title:sub(1, string.find(title, "(Page [^*])") - 3))
+			Table = menu.Find(ply, title:sub(1, string.find(title, "(Page [^*])") - 3))
 			page = string.replace(title:sub(string.find(title, "(Page [^*])")), "Page ", "")
 		else
-			Table = menu.Find(title)
+			Table = menu.Find(ply, title)
 			page = 1
 		end
 		
@@ -68,7 +72,7 @@ function menu.Send(title, page)
 			
 		if button == 0 and Table.Control.Close["Title"] ~= nil and Table.Control.Close["Title"] ~= title then
 			hook.Remove("menu", "MenuCore")
-			menu.Send(Table.Control.Close["Title"], Table.Control.Close["Page"])
+			menu.Send(Table.Settings.Player, Table.Control.Close["Title"], Table.Control.Close["Page"])
 			return
 		end
 		
@@ -96,18 +100,13 @@ function _meta:Data(data)
 	table.insert(self.Menu.Control.Buttons[self.Page][self.Button]["data"], data)
 end
 
-
-function meta:SetPlayer(ply)
-	self.Settings.Player = ply:UserID()
-end
-
 function meta:SetTitle(title)
 	self.Settings.Title = title
 end
 
 function meta:SetControlClose(title, page)
-	if menu.Find(title) == nil then title = nil end
-	if page == nil or page < 1 or menu.Find(title).Control.Buttons[page] == nil then page = 1 end
+	if menu.Find(self.Settings.Player, title) == nil then title = nil end
+	if page == nil or page < 1 or menu.Find(self.Settings.Player, title).Control.Buttons[page] == nil then page = 1 end
 	self.Control.Close = {Title = title, Page = page}
 end
 
@@ -123,12 +122,12 @@ function meta:ButtonAdd(text, func, extra)
 		table.insert(self.Control.Buttons, {})
 		local page = self.Control.Buttons[#self.Control.Buttons - 1]
 		if #self.Control.Buttons == 2 then
-			table.insert(page, {text = "Next Page ->", func = function(ply) menu.Send(self.Settings.Title, self.Control.Settings.Next) end, extra = "Page ".. tostring(#self.Control.Buttons), data = {}})
+			table.insert(page, {text = "Next Page ->", func = function(ply) menu.Send(self.Settings.Player, self.Settings.Title, self.Control.Settings.Next) end, extra = "Page ".. tostring(#self.Control.Buttons), data = {}})
 			table.insert(self.Control.Buttons[#self.Control.Buttons], {text = page[9].text, func = page[9].func, extra = page[9].extra, data = {}})
 			table.remove(page, 9)
 		else
-			table.insert(page, {text = "<- Previous Page", func = function(ply) menu.Send(self.Settings.Title, self.Control.Settings.Previous) end, extra = "Page ".. tostring(#self.Control.Buttons - 2), data = {}})
-			table.insert(page, {text = "Next Page ->", func = function(ply) menu.Send(self.Settings.Title, self.Control.Settings.Next) end, extra = "Page ".. tostring(#self.Control.Buttons), data = {}})
+			table.insert(page, {text = "<- Previous Page", func = function(ply) menu.Send(self.Settings.Player, self.Settings.Title, self.Control.Settings.Previous) end, extra = "Page ".. tostring(#self.Control.Buttons - 2), data = {}})
+			table.insert(page, {text = "Next Page ->", func = function(ply) menu.Send(self.Settings.Player, self.Settings.Title, self.Control.Settings.Next) end, extra = "Page ".. tostring(#self.Control.Buttons), data = {}})
 			table.insert(self.Control.Buttons[#self.Control.Buttons], {text = page[8].text, func = page[8].func, extra = page[8].extra, data = {}})
 			table.insert(self.Control.Buttons[#self.Control.Buttons], {text = page[9].text, func = page[9].func, extra = page[9].extra, data = {}})
 			table.remove(page, 8)
@@ -141,5 +140,5 @@ function meta:ButtonAdd(text, func, extra)
 end
 
 function meta:Send()
-	menu.Send(self.Settings.Title)
+	menu.Send(self.Settings.Player, self.Settings.Title)
 end
