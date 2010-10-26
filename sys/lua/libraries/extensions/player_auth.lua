@@ -23,24 +23,31 @@ Admins = {}
 
 if file.Exists("../users.txt") then
 	for line in file.Lines("../users.txt") do
-		line = string.replace(line, " ", "")
-		line = string.replace(line, "\t", "")
-		if line:sub(1, 2) ~= "//" and string.find(line, "#") ~= nil then
-			local exps = string.explode(":", line:sub(2))
-			local id = tonumber(exps[3])
-			Admins[id] = {}
-			Admins[id].name = exps[2]
-			Admins[id].group = exps[1]:sub(2)
+		if line ~= nil and line ~= "" then
+			line = string.replace(line, " ", "")
+			line = string.replace(line, "\t", "")
+			if line:sub(1, 2) ~= "//" and line:sub(1, 1) ~= "#" then
+				local exps = string.explode(":", line)
+				local id = tonumber(exps[3])
+				Admins[id] = {}
+				Admins[id].name = exps[2]
+				Admins[id].group = exps[1]
+			end
 		end
 	end
 end
 
-function PlayerSpawn(ply)
+function PlayerJoin(ply)
 	local usgnid = ply:UsgnID()
 	local ipaddress = ply:IPAddress()
 	
+	for k, v in pairs(Admins) do
+		print(k ..": '".. v.name .."' -- '".. v.group.."'")
+	end
+	
 	if SinglePlayer() or ply:IsListenServerHost() then
 		ply:SetUserGroup("superadmin")
+		ply:PrintMessage(HUD_PRINTTALK, "Hey '".. admin.name .."' - You're in the '".. admin.group .."' group on this server.")
 		return
 	end
 	
@@ -57,4 +64,4 @@ function PlayerSpawn(ply)
 	ply:SetUserGroup(admin.group)
 	ply:PrintMessage(HUD_PRINTTALK, "Hey '".. admin.name .."' - You're in the '".. admin.group .."' group on this server.")
 end
-hook.Add("join", "PlayerAuthSpawn", PlayerSpawn)
+hook.Add("join", "PlayerAuthJoin", PlayerJoin)
