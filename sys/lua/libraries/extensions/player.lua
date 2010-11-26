@@ -9,6 +9,14 @@ function player.GetByID(id)
 	return Table
 end
 
+function player.Rcon(id, ip, port)
+	local Table = CopyMetaTable("Player")
+	Table.ID = id
+	Table.IP = ip
+	Table.Port = port
+	return Table
+end
+
 function player.GetAll()
 	local players = {}
 	for _, v in pairs(_player(0, "table")) do
@@ -44,6 +52,26 @@ function player.GetBots()
 	return bots
 end
 
+function player.GetBotsLiving()
+	local bots = {}
+	for _, ply in pairs(player.GetAllLiving()) do
+		if ply:IsBot() then
+			table.insert(bots, ply)
+		end
+	end
+	return bots
+end
+
+function player.GetHumansLiving()
+	local players = {}
+	for _, ply in pairs(player.GetAllLiving()) do
+		if not ply:IsBot() then
+			table.insert(players, ply)
+		end
+	end
+	return players
+end
+
 function player.GetHumans()
 	local players = {}
 	for _, ply in pairs(player.GetAll()) do
@@ -63,15 +91,23 @@ function meta:UserID()
 end
 
 function meta:AddDeaths(amount)
-	RunConsoleCommand("setdeaths ".. self:UserID() .." ".. (self:Deaths() + amount))
+	if self:UserID() ~= 0 then
+		RunConsoleCommand("setdeaths ".. self:UserID() .." ".. (self:Deaths() + amount))
+	end
 end
 
 function meta:AddScores(amount)
-	RunConsoleCommand("setscore ".. self:UserID() .." ".. (self:Scores() + amount))
+	if self:UserID() ~= 0 then
+		RunConsoleCommand("setscore ".. self:UserID() .." ".. (self:Scores() + amount))
+	end
 end
 
 function meta:UsgnID()
-	return _player(self:UserID(), "usgn")
+	if self:UserID() == 0 then
+		return 0
+	else
+		return _player(self:UserID(), "usgn")
+	end
 end
 
 function meta:Ban()
@@ -83,87 +119,139 @@ function meta:Ban()
 end
 
 function meta:BanName()
-	RunConsoleCommand("banname ".. self:Name())
+	if self:UserID() ~= 0 then
+		RunConsoleCommand("banname ".. self:Name())
+	end
 end
 
 function meta:Kick(reason)
-	if reason == nil or reason == "" then
-		RunConsoleCommand("kick ".. self:UserID())
-	else
-		RunConsoleCommand("kick ".. self:UserID() .."\"".. reason .."\"")
+	if self:UserID() ~= 0 then
+		if empty(reason) then
+			RunConsoleCommand("kick ".. self:UserID())
+		else
+			RunConsoleCommand("kick ".. self:UserID() .."\"".. reason .."\"")
+		end
 	end
 end
 
 function meta:Kill(killer, wpn)
-	if killer == nil or type(killer) ~= "table" or player.GetByID(killer:UserID()) == nil then killer = 0 else killer = killer:UserID() end
-	if wpn == nil or weapon.GetByType(wpn:Type()) == nil then
-		wpn = weapon.GetByType(ITEM_KNIFE):Name() 
-	else
-		if type(wpn) ~= "string" then
-			wpn = wpn:Name()
+	if self:UserID() ~= 0 and self:Alive() then
+		if empty(killer) or empty(player.GetByID(killer:UserID())) then killer = 0 else killer = killer:UserID() end
+		if empty(wpn) or empty(weapon.GetByType(wpn:Type())) then
+			wpn = weapon.GetByType(ITEM_KNIFE):Name() 
+		else
+			if type(wpn) ~= "string" then
+				wpn = wpn:Name()
+			end
 		end
+		RunConsoleCommand("customkill ".. killer .." \"".. wpn .."\" ".. self:UserID())
 	end
-	RunConsoleCommand("customkill ".. killer .." \"".. wpn .."\" ".. self:UserID())
 end
 
 function meta:Die()
-	RunConsoleCommand("killplayer ".. self:UserID())
+	if self:UserID() ~= 0 and self:Alive() then
+		RunConsoleCommand("killplayer ".. self:UserID())
+	end
 end
 
 function meta:SetHealth(amount)
-	RunConsoleCommand("sethealth ".. self:UserID() .." ".. amount)
+	if self:UserID() ~= 0 then
+		RunConsoleCommand("sethealth ".. self:UserID() .." ".. amount)
+	end
 end
 
 function meta:SetArmor(amount)
-	RunConsoleCommand("setarmor ".. self:UserID() .." ".. amount)
+	if self:UserID() ~= 0 then
+		RunConsoleCommand("setarmor ".. self:UserID() .." ".. amount)
+	end
 end
 
 function meta:SetSpeed(amount)
-	RunConsoleCommand("speedmod ".. self:UserID() .." ".. amount)
+	if self:UserID() ~= 0 then
+		RunConsoleCommand("speedmod ".. self:UserID() .." ".. amount)
+	end
 end
 
 function meta:SetMoney(amount)
-	RunConsoleCommand("setmoney ".. self:UserID() .." ".. amount)
+	if self:UserID() ~= 0 then
+		RunConsoleCommand("setmoney ".. self:UserID() .." ".. amount)
+	end
 end
 
 function meta:SetDeaths(amount)
-	RunConsoleCommand("setdeaths ".. self:UserID() .." ".. amount)
+	if self:UserID() ~= 0 then
+		RunConsoleCommand("setdeaths ".. self:UserID() .." ".. amount)
+	end
 end
 
 function meta:SetScores(amount)
-	RunConsoleCommand("setscore ".. self:UserID() .." ".. amount)
+	if self:UserID() ~= 0 then
+		RunConsoleCommand("setscore ".. self:UserID() .." ".. amount)
+	end
 end
 
 function meta:Alive()
-	return tobool(self:Health())
+	if self:UserID() == 0 then
+		return 0
+	else
+		return tobool(self:Health())
+	end
 end
 
 function meta:Health()
-	return _player(self:UserID(), "health")
+	if self:UserID() == 0 then
+		return 0
+	else
+		return _player(self:UserID(), "health")
+	end
 end
 
 function meta:MaxHealth()
-	return _player(self:UserID(), "maxhealth")
+	if self:UserID() == 0 then
+		return 0
+	else
+		return _player(self:UserID(), "maxhealth")
+	end
 end
 
 function meta:Armor()
-	return _player(self:UserID(), "armor")
+	if self:UserID() == 0 then
+		return 0
+	else
+		return _player(self:UserID(), "armor")
+	end
 end
 
 function meta:Deaths()
-	return _player(self:UserID(), "deaths")
+	if self:UserID() == 0 then
+		return 0
+	else
+		return _player(self:UserID(), "deaths")
+	end
 end
 
 function meta:Scores()
-	return _player(self:UserID(), "score")
+	if self:UserID() == 0 then
+		return 0
+	else
+		return _player(self:UserID(), "score")
+	end
 end
 
 function meta:IPAddress()
-	return _player(self:UserID(), "ip")
+	if self:UserID() == 0 then
+		return self.IP
+	else
+		return _player(self:UserID(), "ip")
+	end
 end
 
 function meta:Pos()
-	return Vector(_player(self:UserID(), "x"), _player(self:UserID(), "y"))
+	if self:UserID() == 0 then
+		return Vector(0, 0)
+	else
+		return Vector(_player(self:UserID(), "x"), _player(self:UserID(), "y"))
+	end
 end
 
 function meta:GetPos()
@@ -171,11 +259,17 @@ function meta:GetPos()
 end
 
 function meta:SetPos(x, y)
-	RunConsoleCommand("setpos ".. self:UserID() .." ".. tostring(x) .." ".. tostring(y))
+	if self:UserID() ~= 0 then
+		RunConsoleCommand("setpos ".. self:UserID() .." ".. tostring(x) .." ".. tostring(y))
+	end
 end
 
 function meta:Tile()
-	return Vector(_player(self:UserID(), "tilex"), _player(self:UserID(), "tiley"))
+	if self:UserID() == 0 then
+		return Vector(0, 0)
+	else
+		return Vector(_player(self:UserID(), "tilex"), _player(self:UserID(), "tiley"))
+	end
 end
 
 function meta:GetTile()
@@ -183,12 +277,18 @@ function meta:GetTile()
 end
 
 function meta:SetTile(tilex, tiley)
-	local pos = convert.pos(tonumber(tilex), tonumber(tiley))
-	RunConsoleCommand("setpos ".. self:UserID() .." ".. tostring(pos.x) .." ".. tostring(pos.y))
+	if self:UserID() ~= 0 then
+		local pos = convert.pos(tonumber(tilex), tonumber(tiley))
+		RunConsoleCommand("setpos ".. self:UserID() .." ".. tostring(pos.x) .." ".. tostring(pos.y))
+	end
 end
 
 function meta:Name()
-	return _player(self:UserID(), "name")
+	if self:UserID() == 0 then
+		return "Rcon"
+	else
+		return _player(self:UserID(), "name")
+	end
 end
 
 function meta:GetName()
@@ -196,58 +296,90 @@ function meta:GetName()
 end
 
 function meta:SetName(name)
-	RunConsoleCommand("setname ".. self:UserID() .." ".. name)
+	if self:UserID() ~= 0 then
+		RunConsoleCommand("setname ".. self:UserID() .." ".. name)
+	end
 end
 
 function meta:Ping()
-	return _player(self:UserID(), "ping")
+	if self:UserID() == 0 then
+		return 0
+	else
+		return _player(self:UserID(), "ping")
+	end
 end
 
 function meta:Speed()
-	return _player(self:UserID(), "speedmod")
+	if self:UserID() == 0 then
+		return 0
+	else
+		return _player(self:UserID(), "speedmod")
+	end
 end
 
 function meta:Money()
-	return _player(self:UserID(), "money")
+	if self:UserID() == 0 then
+		return 0
+	else
+		return _player(self:UserID(), "money")
+	end
 end
 
 function meta:Team()
-	return _player(self:UserID(), "team")
+	if self:UserID() == 0 then
+		return 0
+	else
+		return _player(self:UserID(), "team")
+	end
 end
 
 function meta:SetTeam(team)
-	if team == TEAM_TERRORIST then
-		RunConsoleCommand("maket ".. self:UserID())
-	elseif team == TEAM_COUNTER_TERRORIST then
-		RunConsoleCommand("makect ".. self:UserID())
-	else
-		RunConsoleCommand("makespec ".. self:UserID())
+	if self:UserID() ~= 0 then
+		if team == TEAM_TERRORIST then
+			RunConsoleCommand("maket ".. self:UserID())
+		elseif team == TEAM_COUNTER_TERRORIST then
+			RunConsoleCommand("makect ".. self:UserID())
+		else
+			RunConsoleCommand("makespec ".. self:UserID())
+		end
 	end
 end
 
 function meta:PrintMessage(type, text)
-	text = string.replace(text, "@C", "")
-	if type == HUD_PRINTCENTER then
-		msg2(self:UserID(), text .."@C")
-	else
-		msg2(self:UserID(), text)
+	if self:UserID() ~= 0 then
+		text = string.replace(text, "@C", "")
+		if type == HUD_PRINTCENTER then
+			msg2(self:UserID(), text .."@C")
+		else
+			msg2(self:UserID(), text)
+		end
 	end
 end
 
 function meta:ChatPrint(text)
-	msg2(self:UserID(), string.replace(text, "@C", ""))
+	if self:UserID() ~= 0 then
+		msg2(self:UserID(), string.replace(text, "@C", ""))
+	end
 end
 
 function meta:Hud(id, txt, pos, align)
-	RunConsoleCommand("hudtxt2 ".. self:UserID() .." ".. id .." \"".. txt .."\" ".. pos.x .." ".. pos.y .." ".. align)
+	if self:UserID() ~= 0 then
+		RunConsoleCommand("hudtxt2 ".. self:UserID() .." ".. id .." \"".. txt .."\" ".. pos.x .." ".. pos.y .." ".. align)
+	end
 end
 
 function meta:ClearHud(id)
-	RunConsoleCommand("hudtxt2 ".. self:UserID() .." ".. id .." \"\" 0 0 ".. TEXT_ALIGN_LEFT)
+	if self:UserID() ~= 0 then
+		RunConsoleCommand("hudtxt2 ".. self:UserID() .." ".. id .." \"\" 0 0 ".. TEXT_ALIGN_LEFT)
+	end
 end
 
 function meta:IsBot()
-	return tobool(_player(self:UserID(), "bot"))
+	if self:UserID() == 0 then
+		return 1
+	else
+		return tobool(_player(self:UserID(), "bot"))
+	end
 end
 
 function meta:IsPlayer()
@@ -294,27 +426,51 @@ function meta:CloseItems(ranger)
 end
 
 function meta:IsIdle()
-	return _player(self:UserID(), "idle")
+	if self:UserID() == 0 then
+		return 0
+	else
+		return _player(self:UserID(), "idle")
+	end
 end
 
 function meta:Angle()
-	return _player(self:UserID(), "rot")
+	if self:UserID() == 0 then
+		return 0
+	else
+		return _player(self:UserID(), "rot")
+	end
 end
 
 function meta:HasNightvision()
-	return _player(self:UserID(), "nightvision")
+	if self:UserID() == 0 then
+		return 0
+	else
+		return _player(self:UserID(), "nightvision")
+	end
 end
 
 function meta:HasDefusekit()
-	return _player(self:UserID(), "defusekit")
+	if self:UserID() == 0 then
+		return 0
+	else
+		return _player(self:UserID(), "defusekit")
+	end
 end
 
 function meta:HasBomb()
-	return _player(self:UserID(), "bomb")
+	if self:UserID() == 0 then
+		return 0
+	else
+		return _player(self:UserID(), "bomb")
+	end
 end
 
 function meta:HasFlag()
-	return _player(self:UserID(), "flag")
+	if self:UserID() == 0 then
+		return 0
+	else
+		return _player(self:UserID(), "flag")
+	end
 end
 
 function meta:HasWeapon(index)
@@ -380,5 +536,9 @@ function meta:Give(index)
 end
 
 function meta:Look()
-	return _player(self:UserID(), "look")
+	if self:UserID() == 0 then
+		return 0
+	else
+		return _player(self:UserID(), "look")
+	end
 end

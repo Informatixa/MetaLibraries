@@ -29,12 +29,16 @@ function PrintMessage(type, text)
 	end
 end
 
+function Trigger(name)
+	RunConsoleCommand(string.format("trigger %s", name))
+end
+
 function Hud(id, txt, pos, align)
-	RunConsoleCommand("hudtxt ".. id .." \"".. txt .."\" ".. pos.x .." ".. pos.y .." ".. align)
+	RunConsoleCommand(string.format("hudtxt %s %s %s %d", id, txt, pos.x, pos.y, align))
 end
 
 function ClearHud(id)
-	RunConsoleCommand("hudtxt ".. id .." \"\" 0 0 ".. TEXT_ALIGN_LEFT)
+	RunConsoleCommand(string.format("hudtxt %s \"\" 0 0 %d", id, TEXT_ALIGN_LEFT))
 end
 
 function Vector(posX, posY)
@@ -44,4 +48,9 @@ end
 function tobool(val)
 	if val == nil or val == false or val == 0 or val == "0" or val == "false" or val == "" then return false end
 	return true
+end
+
+function empty(val)
+	if val == nil or val == "" then return true end
+	return false
 end

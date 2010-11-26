@@ -15,7 +15,7 @@ end
 
 function chatcommand.Run(ply, message, sayteam)
 	local cmd = string.replace(string.explode(" ", message)[1], "!", "")
-	local args = string.explode(" ", message:sub(cmd:len() + 1))
+	local args = string.explode(" ", message:sub(cmd:len() + 3))
 	
 	if message:sub(1, 1) == "!" then
 		if cmd == "credit" then
@@ -24,10 +24,8 @@ function chatcommand.Run(ply, message, sayteam)
 			return true
 		end
 		
-		table.remove(args, 1)
-		
 		for _, v in pairs(args) do
-			if v == nil or v == "" then
+			if empty(v) then
 				ply:ChatPrint("©255255000The argument is null!")
 				return true
 			end
@@ -70,9 +68,6 @@ function comcommand.Run(cmd, args)
 	end
 end
 
-function comcommand.Parse(text)
-	local cmd = string.explode(" ", text)[1]
-	local args = string.explode(" ", text:sub(cmd:len() + 1))
+hook.Add("parse", "ConCommand", function(cmd, args)
 	if comcommand.Run(cmd, args) then return HOOK_NOPARSE else return HOOK_PARSE end
-end
-addhook("parse", "comcommand.Parse")
+end)

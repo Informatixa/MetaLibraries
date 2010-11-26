@@ -3,7 +3,7 @@ local meta = CreateMetaTable("Weapon")
 weapon = {}
 
 function weapon.GetByType(type)
-	if itemtype(type, "name") == "" then return nil end
+	if itemtype(type, "name") == "" and type ~= 250 then return nil end
 	local Table = CopyMetaTable("Weapon")
 	Table.Index = type
 	return Table
@@ -14,53 +14,105 @@ function meta:Type()
 end
 
 function meta:Name()
-	return itemtype(self:Type(), "name")
+	if self:Type() == 250 then
+		return "Custom"
+	else
+		return itemtype(self:Type(), "name")
+	end
 end
 
 function meta:Domage()
-	return itemtype(self:Type(), "dmg")
+	if self:Type() == 250 then
+		return 0
+	else
+		return itemtype(self:Type(), "dmg")
+	end
 end
 
 function meta:Zoom1()
-	return itemtype(self:Type(), "dmz_z1")
+	if self:Type() == 250 then
+		return 0
+	else
+		return itemtype(self:Type(), "dmz_z1")
+	end
 end
 
 function meta:Zoom2()
-	return itemtype(self:Type(), "dmg_z2")
+	if self:Type() == 250 then
+		return 0
+	else
+		return itemtype(self:Type(), "dmg_z2")
+	end
 end
 
 function meta:Rate()
-	return itemtype(self:Type(), "rate")
+	if self:Type() == 250 then
+		return 0
+	else
+		return itemtype(self:Type(), "rate")
+	end
 end
 
 function meta:Reload()
-	return itemtype(self:Type(), "reload")
+	if self:Type() == 250 then
+		return 0
+	else
+		return itemtype(self:Type(), "reload")
+	end
 end
 	
 function meta:Ammo()
-	return itemtype(self:Type(), "ammo")
+	if self:Type() == 250 then
+		return 0
+	else
+		return itemtype(self:Type(), "ammo")
+	end
 end
 
 function meta:Ammoin()
-	return itemtype(self:Type(), "ammoin")
+	if self:Type() == 250 then
+		return 0
+	else
+		return itemtype(self:Type(), "ammoin")
+	end
 end
 
 function meta:Price()
-	return itemtype(self:Type(), "price")
+	if self:Type() == 250 then
+		return 0
+	else
+		return itemtype(self:Type(), "price")
+	end
 end
 
 function meta:Range()
-	return itemtype(self:Type(), "range")
+	if self:Type() == 250 then
+		return 0
+	else
+		return itemtype(self:Type(), "range")
+	end
 end
 
 function meta:Dispersion()
-	return itemtype(self:Type(), "dispersion")
+	if self:Type() == 250 then
+		return 0
+	else
+		return itemtype(self:Type(), "dispersion")
+	end
 end
 
 function meta:Slot()
-	return itemtype(self:Type(), "slot")
+	if self:Type() == 250 then
+		return 0
+	else
+		return itemtype(self:Type(), "slot")
+	end
 end
 
 function meta:Recoil()
-	return itemtype(self:Type(), "recoil")
+	if self:Type() == 250 then
+		return 0
+	else
+		return itemtype(self:Type(), "recoil")
+	end
 end

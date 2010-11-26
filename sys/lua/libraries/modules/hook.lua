@@ -568,10 +568,13 @@ function hook.Core.menu(id, title, button)
 end
 addhook("menu","hook.Core.menu")
 
-function hook.Core.rcon(cmds, id, ip, port)
+function hook.Core.rcon(message, id, ip, port)
 	if hook.GetTable()["rcon"] ~= nil then
+		local cmd = string.explode(" ", message)[1]
+		local args = string.explode(" ", message:sub(cmd:len() + 2))
+			
 		for k, v in pairs(hook.GetTable()["rcon"]) do
-			local r = v.func(cmds, player.GetByID(id), ip, port)
+			local r = v.func(player.Rcon(id, ip, port), cmd, args)
 			if r ~= nil then
 				return r
 			end
@@ -600,3 +603,18 @@ function hook.Core.objectkill(id, ply)
 	end
 end
 addhook("objectkill","hook.Core.objectkill")
+
+function hook.Core.parse(text)
+	if hook.GetTable()["parse"] ~= nil then
+		local cmd = string.explode(" ", text)[1]
+		local args = string.explode(" ", text:sub(cmd:len() + 2))
+		
+		for k, v in pairs(hook.GetTable()["parse"]) do
+			local r = v.func(cmd, args)
+			if r ~= nil then
+				return r
+			end
+		end
+	end
+end
+addhook("parse","hook.Core.parse")

@@ -8,19 +8,20 @@ hook.Add("join", "PlayerMenuJoin", function(ply)
 	player.Menu[ply:UserID()] = {}
 end)
 
-function menu.Create(ply)
+function menu.Create(ply, title)
 	local Table = CopyMetaTable("Menu")
 	
 	Table.Control = {}
 	Table.Control.Settings = {}
 	Table.Control.Buttons = {{}}
-	Table.Control.Close = {Title = nil, Page = 1}
+	Table.Control.Close = nil
+	--Table.Control.Close = {Title = nil, Page = 1}
 		
 	Table.Settings = {}
 	Table.Settings.Player = ply
-	Table.Settings.Title = "N/A"
+	Table.Settings.Title = title
 	
-	table.insert(player.Menu[ply:UserID()], Table)
+	player.Menu[ply:UserID()][Table.Settings.Title] = Table
 	
 	return Table
 end
@@ -70,10 +71,15 @@ function menu.Send(ply, title, page)
 		
 		Table.Control.Settings = {Previous = page - 1, Next = page + 1}
 			
-		if button == 0 and Table.Control.Close["Title"] ~= nil and Table.Control.Close["Title"] ~= title then
+		--[[if button == 0 and Table.Control.Close["Title"] ~= nil and Table.Control.Close["Title"] ~= title then
 			hook.Remove("menu", "MenuCore")
 			menu.Send(Table.Settings.Player, Table.Control.Close["Title"], Table.Control.Close["Page"])
 			return
+		end--]]
+		
+		if button == 0 and Table.Control.Close ~= nil then
+			hook.Remove("menu", "MenuCore")
+			Table.Control.Close(ply)
 		end
 		
 		for k, v in pairs(Table.Control.Buttons[tonumber(page)]) do
@@ -100,14 +106,11 @@ function _meta:Data(data)
 	table.insert(self.Menu.Control.Buttons[self.Page][self.Button]["data"], data)
 end
 
-function meta:SetTitle(title)
-	self.Settings.Title = title
-end
-
-function meta:SetControlClose(title, page)
-	if menu.Find(self.Settings.Player, title) == nil then title = nil end
-	if page == nil or page < 1 or menu.Find(self.Settings.Player, title).Control.Buttons[page] == nil then page = 1 end
-	self.Control.Close = {Title = title, Page = page}
+function meta:SetControlClose(func)
+	--if menu.Find(self.Settings.Player, title) == nil then title = nil end
+	--if page == nil or page < 1 or menu.Find(self.Settings.Player, title).Control.Buttons[page] == nil then page = 1 end
+	--self.Control.Close = {Title = title, Page = page}
+	self.Control.Close = func
 end
 
 function meta:ButtonAdd(text, func, extra)
