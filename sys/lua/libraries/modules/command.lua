@@ -24,6 +24,10 @@ function chatcommand.Run(ply, message, sayteam)
 			return true
 		end
 		
+		if message:sub(cmd:len() + 2):len() == 0 then
+			args[1] = nil
+		end
+		
 		for _, v in pairs(args) do
 			if empty(v) then
 				ply:ChatPrint("©255255000The argument is null!")
