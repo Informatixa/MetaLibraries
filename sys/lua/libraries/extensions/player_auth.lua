@@ -23,10 +23,9 @@ Admins = {}
 
 if file.Exists("../users.txt") then
 	for line in file.Lines("../users.txt") do
-		if line ~= nil and line ~= "" then
-			line = string.replace(line, " ", "")
-			line = string.replace(line, "\t", "")
-			if line:sub(1, 2) ~= "//" and line:sub(1, 1) ~= "#" then
+		line = string.trim(line)
+		if not empty(line) then
+			if string.len(line) > 2 and line:sub(1, 2) ~= "//" and line:sub(1, 1) ~= "#" then
 				local exps = string.explode(":", line)
 				local id = tonumber(exps[3])
 				Admins[id] = {}

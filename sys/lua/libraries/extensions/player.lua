@@ -110,17 +110,43 @@ function meta:UsgnID()
 	end
 end
 
-function meta:Ban()
+function meta:Ban(duration)
 	if self:UsgnID() == 0 then
-		RunConsoleCommand("banip ".. self:IPAddress())
+		if empty(duration) then
+			RunConsoleCommand("banip ".. self:IPAddress())
+		else
+			RunConsoleCommand("banip ".. self:IPAddress() .." ".. duration)
+		end
 	else
-		RunConsoleCommand("banusgn ".. self:UsgnID())
+		if empty(duration) then
+			RunConsoleCommand("banusgn ".. self:UsgnID())
+		else
+			RunConsoleCommand("banusgn ".. self:UsgnID() .." ".. duration)
+		end
 	end
 end
 
-function meta:BanName()
+function meta:TempBan()
+	if self:UsgnID() == 0 then
+		RunConsoleCommand("banip ".. self:IPAddress() .." -1")
+	else
+		RunConsoleCommand("banusgn ".. self:UsgnID() .." -1")
+	end
+end
+
+function meta:BanName(duration)
 	if self:UserID() ~= 0 then
-		RunConsoleCommand("banname ".. self:Name())
+		if empty(duration) then
+			RunConsoleCommand("banname ".. self:Name())
+		else
+			RunConsoleCommand("banname ".. self:Name() .." ".. duration)
+		end
+	end
+end
+
+function meta:TempBanName()
+	if self:UserID() ~= 0 then
+		RunConsoleCommand("banname ".. self:Name() .." -1")
 	end
 end
 
@@ -129,7 +155,7 @@ function meta:Kick(reason)
 		if empty(reason) then
 			RunConsoleCommand("kick ".. self:UserID())
 		else
-			RunConsoleCommand("kick ".. self:UserID() .."\"".. reason .."\"")
+			RunConsoleCommand("kick ".. self:UserID() .." \"".. reason .."\"")
 		end
 	end
 end

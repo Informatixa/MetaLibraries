@@ -93,7 +93,7 @@ function meta:Parse()
 				else
 					self.Results[current] = self.Results[current] or {}
 					
-					if (current ~= "") then
+					if not empty(current) then
 						line = string.explode("=", line)
 						
 						if (table.count(line) == 2) then

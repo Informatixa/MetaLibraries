@@ -122,6 +122,14 @@ function hook.Core.spawn(id)
 end
 addhook("spawn","hook.Core.spawn")
 
+--[[function ai_respawn(id)
+	if hook.GetTable()["ai_respawn"] ~= nil then
+		for k, v in pairs(hook.GetTable()["ai_respawn"]) do
+			v.func(player.GetByID(id))
+		end
+	end
+end--]]
+
 function hook.Core.startround(mode)
 	if hook.GetTable()["startround"] ~= nil then
 		for k, v in pairs(hook.GetTable()["startround"]) do
@@ -216,6 +224,17 @@ function hook.Core.buy(id, wpn)
 end
 addhook("buy","hook.Core.buy")
 
+--[[function ai_buy(id, wpn)
+	if hook.GetTable()["ai_buy"] ~= nil then
+		for k, v in pairs(hook.GetTable()["ai_buy"]) do
+			local r = v.func(player.GetByID(id), weapon.GetByType(wpn))
+			if r ~= nil then
+				return r
+			end
+		end
+	end
+end--]]
+
 function hook.Core.walkover(id, iid, type, ain, a, mode)
 	if hook.GetTable()["walkover"] ~= nil then
 		for k, v in pairs(hook.GetTable()["walkover"]) do
@@ -249,23 +268,47 @@ function hook.Core.drop(id, iid, type, ain, a, mode, x, y)
 end
 addhook("drop","hook.Core.drop")
 
+--[[function ai_drop(id)
+	if hook.GetTable()["ai_drop"] ~= nil then
+		for k, v in pairs(hook.GetTable()["ai_drop"]) do
+			v.func(player.GetByID(id))
+		end
+	end
+end--]]
+
 function hook.Core.select(id, type, mode)
 	if hook.GetTable()["select"] ~= nil then
 		for k, v in pairs(hook.GetTable()["select"]) do
-			v.func(player.GetByID(id), type, mode)
+			v.func(player.GetByID(id), weapon.GetByType(type), mode)
 		end
 	end
 end
 addhook("select","hook.Core.select")
 
-function hook.Core.reload(id, mode)
+--[[function ai_selectweapon(id, type)
+	if hook.GetTable()["ai_selectweapon"] ~= nil then
+		for k, v in pairs(hook.GetTable()["ai_selectweapon"]) do
+			v.func(player.GetByID(id), weapon.GetByType(type))
+		end
+	end
+end--]]
+
+function hook.Core.reload(id)
 	if hook.GetTable()["reload"] ~= nil then
 		for k, v in pairs(hook.GetTable()["reload"]) do
-			v.func(player.GetByID(id), mode)
+			v.func(player.GetByID(id))
 		end
 	end
 end
 addhook("reload","hook.Core.reload")
+
+--[[function ai_reload(id)
+	if hook.GetTable()["ai_reload"] ~= nil then
+		for k, v in pairs(hook.GetTable()["ai_reload"]) do
+			v.func(player.GetByID(id), mode)
+		end
+	end
+end--]]
 
 function hook.Core.attack(id)
 	if hook.GetTable()["attack"] ~= nil then
@@ -285,6 +328,22 @@ function hook.Core.attack2(id, mode)
 end
 addhook("attack2","hook.Core.attack2")
 
+--[[function ai_attack(id, secondary)
+	if tobool(secondary) then
+		if hook.GetTable()["ai_attack2"] ~= nil then
+			for k, v in pairs(hook.GetTable()["ai_attack2"]) do
+				v.func(player.GetByID(id))
+			end
+		end
+	else
+		if hook.GetTable()["ai_attack"] ~= nil then
+			for k, v in pairs(hook.GetTable()["ai_attack"]) do
+				v.func(player.GetByID(id))
+			end
+		end
+	end
+end--]]
+
 function hook.Core.projectile(id, wpn, x, y)
 	if hook.GetTable()["projectile"] ~= nil then
 		for k, v in pairs(hook.GetTable()["projectile"]) do
@@ -302,6 +361,14 @@ function hook.Core.move(id, x, y, walk)
 	end
 end
 addhook("move","hook.Core.move")
+
+--[[function ai_move(id, angle, walk)
+	if hook.GetTable()["ai_move"] ~= nil then
+		for k, v in pairs(hook.GetTable()["ai_move"]) do
+			v.func(player.GetByID(id), angle, walk)
+		end
+	end
+end--]]
 
 function hook.Core.movetile(id, x, y)
 	if hook.GetTable()["movetile"] ~= nil then
@@ -363,6 +430,14 @@ function hook.Core.use(id, event, data, x, y)
 end
 addhook("use","hook.Core.use")
 
+--[[function ai_use(id)
+	if hook.GetTable()["ai_use"] ~= nil then
+		for k, v in pairs(hook.GetTable()["ai_use"]) do
+			v.func(player.GetByID(id))
+		end
+	end
+end--]]
+
 function hook.Core.usebutton(id, x, y)
 	if hook.GetTable()["usebutton"] ~= nil then
 		for k, v in pairs(hook.GetTable()["usebutton"]) do
@@ -391,6 +466,16 @@ function hook.Core.say(id, message)
 end
 addhook("say","hook.Core.say")
 
+--[[function ai_say(id, message)
+	local ply = player.GetByID(id)
+
+	if hook.GetTable()["ia_say"] ~= nil then
+		for k, v in pairs(hook.GetTable()["ia_say"]) do
+			v.func(ply, message)
+		end
+	end
+end--]]
+
 function hook.Core.sayteam(id, message)
 	local ply = player.GetByID(id)
 	if chatcommand.Run(ply, message, true) then return HOOK_NOSAYTEAM end
@@ -410,6 +495,16 @@ function hook.Core.sayteam(id, message)
 end
 addhook("sayteam","hook.Core.sayteam")
 
+--[[function ai_sayteam(id, message)
+	local ply = player.GetByID(id)
+
+	if hook.GetTable()["ai_sayteam"] ~= nil then
+		for k, v in pairs(hook.GetTable()["ai_sayteam"]) do
+			v.func(ply, message)
+		end
+	end
+end--]]
+
 function hook.Core.radio(id, message)
 	if hook.GetTable()["radio"] ~= nil then
 		for k, v in pairs(hook.GetTable()["radio"]) do
@@ -422,6 +517,14 @@ function hook.Core.radio(id, message)
 end
 addhook("radio","hook.Core.radio")
 
+--[[function ai_radio(id, message)
+	if hook.GetTable()["ai_radio"] ~= nil then
+		for k, v in pairs(hook.GetTable()["ai_radio"]) do
+			v.func(player.GetByID(id), message)
+		end
+	end
+end--]]
+
 function hook.Core.spray(id)
 	if hook.GetTable()["spray"] ~= nil then
 		for k, v in pairs(hook.GetTable()["spray"]) do
@@ -430,6 +533,14 @@ function hook.Core.spray(id)
 	end
 end
 addhook("spray","hook.Core.spray")
+
+--[[function ai_spray(id)
+	if hook.GetTable()["ai_spray"] ~= nil then
+		for k, v in pairs(hook.GetTable()["ai_spray"]) do
+			v.func(player.GetByID(id))
+		end
+	end
+end--]]
 
 function hook.Core.vote(id, mode, param)
 	if hook.GetTable()["vote"] ~= nil then
@@ -451,6 +562,14 @@ function hook.Core.buildattempt(id, type, x, y)
 	end
 end
 addhook("buildattempt","hook.Core.buildattempt")
+
+--[[function ai_build(id, type, x, y)
+	if hook.GetTable()["ai_build"] ~= nil then
+		for k, v in pairs(hook.GetTable()["ai_build"]) do
+			v.func(player.GetByID(id), type, x, y)
+		end
+	end
+end--]]
 
 function hook.Core.build(id, type, x, y, mode, objectid)
 	if hook.GetTable()["build"] ~= nil then
@@ -618,3 +737,83 @@ function hook.Core.parse(text)
 	end
 end
 addhook("parse","hook.Core.parse")
+
+--[[function ai_rotate(id, angle)
+	if hook.GetTable()["ai_rotate"] ~= nil then
+		for k, v in pairs(hook.GetTable()["ai_rotate"]) do
+			v.func(player.GetByID(id), angle)
+		end
+	end
+end
+
+function ai_goto(id, x, y, walk)
+	if hook.GetTable()["ai_goto"] ~= nil then
+		for k, v in pairs(hook.GetTable()["ai_goto"]) do
+			v.func(player.GetByID(id), x, y, walk)
+		end
+	end
+end
+
+function ai_debug(id, text)
+	if hook.GetTable()["ai_debug"] ~= nil then
+		for k, v in pairs(hook.GetTable()["ai_debug"]) do
+			v.func(player.GetByID(id), text)
+		end
+	end
+end
+
+function ai_iattack(id)
+	if hook.GetTable()["ai_iattack"] ~= nil then
+		for k, v in pairs(hook.GetTable()["ai_iattack"]) do
+			v.func(player.GetByID(id))
+		end
+	end
+end
+
+function ai_aim(id, x, y)
+	if hook.GetTable()["ai_aim"] ~= nil then
+		for k, v in pairs(hook.GetTable()["ai_aim"]) do
+			v.func(player.GetByID(id), x, y)
+		end
+	end
+end
+
+function ai_freeline(id, x, y)
+	if hook.GetTable()["ai_freeline"] ~= nil then
+		for k, v in pairs(hook.GetTable()["ai_freeline"]) do
+			v.func(player.GetByID(id), x, y)
+		end
+	end
+end
+
+function ai_findtarget(id)
+	if hook.GetTable()["ai_findtarget"] ~= nil then
+		for k, v in pairs(hook.GetTable()["ai_findtarget"]) do
+			v.func(player.GetByID(id))
+		end
+	end
+end--]]
+
+function hook.Core.clientdata(id, mode, data1, data2)
+	if hook.GetTable()["clientdata"] ~= nil then
+		for k, v in pairs(hook.GetTable()["clientdata"]) do
+			local r = v.func(player.GetByID(id), mode, data1, data2)
+			if r ~= nil then
+				return r
+			end
+		end
+	end
+end
+addhook("clientdata","hook.Core.clientdata")
+
+function hook.Core.objectupgrade(id, ply, progress, total)
+	if hook.GetTable()["objectupgrade"] ~= nil then
+		for k, v in pairs(hook.GetTable()["objectupgrade"]) do
+			local r = v.func(object.GetByID(id), player.GetByID(ply), progress, total)
+			if r ~= nil then
+				return r
+			end
+		end
+	end
+end
+addhook("objectupgrade","hook.Core.objectupgrade")

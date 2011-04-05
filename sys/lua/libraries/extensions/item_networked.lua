@@ -1,7 +1,6 @@
 local meta = FindMetaTable("Item")
 if not meta then return end
 
-networked = {}
 item.Networked = {}
 
 function meta:GetNetworked(name)
@@ -23,3 +22,7 @@ hook.Add("always", "ItemNetworked", function()
 		end
 	end
 end)
+
+--[[hook.Add("collect", "ItemNetworked", function(ply, i, type, ain, a, mode)
+	item.Networked[i:ID()] = nil
+end)--]]

@@ -8,5 +8,5 @@
 // in your script by doing ply:IsUserGroup( "admin" ) etc
 //
 
-// #superadmin : Informatixa : 4565
-// #admin : Informatixa : 4565
+// superadmin : Informatixa : 4565
+// admin : Informatixa : 4565
