@@ -12,24 +12,13 @@
 -- sys/lua/info.txt contains an AI commandlist! --
 --------------------------------------------------
 
-__map = map
-__game = game
-__player = player
-__item = item
-__menu = menu
-map = _map
-game = _game
-player = _player
-item = _item
-menu = _menu
-
 -- Includes
-dofile("bots/includes/settings.lua")	-- track settings
-dofile("bots/includes/general.lua")		-- general helper functions
-dofile("bots/includes/buy.lua")			-- buying
-dofile("bots/includes/decide.lua")		-- decision making process
-dofile("bots/includes/engage.lua")		-- engage/attack/battle
-dofile("bots/includes/collect.lua")		-- item collecting
+dofile("bots/includes/settings.original.lua")	-- track settings
+dofile("bots/includes/general.original.lua")		-- general helper functions
+dofile("bots/includes/buy.original.lua")			-- buying
+dofile("bots/includes/decide.original.lua")		-- decision making process
+dofile("bots/includes/engage.original.lua")		-- engage/attack/battle
+dofile("bots/includes/collect.original.lua")		-- item collecting
 
 -- AI Variables (vai_)
 vai_set_gm=0					-- Game Mode Setting
@@ -458,9 +447,3 @@ end
 function ai_hear_chat(source,msg,teamonly)
 	-- Ignore chat
 end
-
-map = __map
-game = __game
-player = __player
-item = __item
-menu = __menu

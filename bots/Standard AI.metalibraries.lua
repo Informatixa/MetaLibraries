@@ -13,12 +13,12 @@
 --------------------------------------------------
 
 -- Includes
-dofile("bots/includes/settings.lua")	-- track settings
-dofile("bots/includes/general.lua")		-- general helper functions
-dofile("bots/includes/buy.lua")			-- buying
-dofile("bots/includes/decide.lua")		-- decision making process
-dofile("bots/includes/engage.lua")		-- engage/attack/battle
-dofile("bots/includes/collect.lua")		-- item collecting
+dofile("bots/includes/settings.metalibraries.lua")	-- track settings
+dofile("bots/includes/general.metalibraries.lua")		-- general helper functions
+dofile("bots/includes/buy.metalibraries.lua")			-- buying
+dofile("bots/includes/decide.metalibraries.lua")		-- decision making process
+dofile("bots/includes/engage.metalibraries.lua")		-- engage/attack/battle
+dofile("bots/includes/collect.metalibraries.lua")		-- item collecting
 
 -- AI Variables (vai_)
 vai_set_gm=0					-- Game Mode Setting
