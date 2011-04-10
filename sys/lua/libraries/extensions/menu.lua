@@ -42,7 +42,7 @@ function menu.Send(ply, title, page)
 	if page == nil or page < 1 or Table.Control.Buttons[page] == nil then page = 1 end
 	
 	if #Table.Control.Buttons > 1  and Table.Control.Buttons[#Table.Control.Buttons][#Table.Control.Buttons[#Table.Control.Buttons]].text ~= "<- Previous Page" then
-		table.insert(Table.Control.Buttons[#Table.Control.Buttons], {text = "<- Previous Page", func = function(ply) menu.Send(Table.Settings.Player, Table.Settings.Title, Table.Control.Settings.Previous) end, extra = "Page ".. tostring(#Table.Control.Buttons - 1)})
+		table.insert(Table.Control.Buttons[#Table.Control.Buttons], {text = "<- Previous Page", func = function(ply) menu.Send(Table.Settings.Player, Table.Settings.Title, Table.Control.Settings.Previous) end, extra = "Page ".. tostring(#Table.Control.Buttons - 1), data = {}})
 	end
 	
 	local text = ""
@@ -61,7 +61,7 @@ function menu.Send(ply, title, page)
 		
 		if string.find(title, "(Page [^*])") ~= nil then
 			Table = menu.Find(ply, title:sub(1, string.find(title, "(Page [^*])") - 3))
-			page = string.replace(title:sub(string.find(title, "(Page [^*])")), "Page ", "")
+			page = tonumber(string.replace(title:sub(string.find(title, "(Page [^*])")), "Page ", ""))
 		else
 			Table = menu.Find(ply, title)
 			page = 1
@@ -82,10 +82,10 @@ function menu.Send(ply, title, page)
 			Table.Control.Close(ply)
 		end
 		
-		for k, v in pairs(Table.Control.Buttons[tonumber(page)]) do
+		for k, v in pairs(Table.Control.Buttons[page]) do
 			if button == k then
 				hook.Remove("menu", "MenuCore")
-				v.func(ply, Table.Control.Buttons[page][k]["data"])
+				v.func(ply, Table.Control.Buttons[page][k].data)
 				break
 			end
 		end
@@ -103,7 +103,7 @@ function menu.ButtonData(menu, page, button)
 end
 
 function _meta:Data(data)
-	table.insert(self.Menu.Control.Buttons[self.Page][self.Button]["data"], data)
+	table.insert(self.Menu.Control.Buttons[self.Page][self.Button].data, data)
 end
 
 function meta:SetControlClose(func)
