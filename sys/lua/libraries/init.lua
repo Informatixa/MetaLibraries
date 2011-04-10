@@ -10,7 +10,7 @@ _tile = tile
 _string = string
 
 RunConsoleCommand = parse
-MetaLibrariesVersion = 59
+MetaLibrariesVersion = 61
 
 print("©000255000Loading MetaLibraries...")
 

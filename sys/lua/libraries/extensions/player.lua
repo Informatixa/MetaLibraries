@@ -3,7 +3,7 @@ local meta = CreateMetaTable("Player")
 player = {}
 
 function player.GetByID(id)
-	if id == 0 or not tobool(_player(id, "exists")) then return nil end
+	if not tobool(id) or not tobool(_player(id, "exists")) then return nil end
 	local Table = CopyMetaTable("Player")
 	Table.ID = id
 	return Table
