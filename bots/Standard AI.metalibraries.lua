@@ -47,17 +47,16 @@ end
 -- This function is called by CS2D automatically after each spawn of a bot
 -- Parameter: id = player ID of the bot
 function ai_onspawn(id)
-	local pos = player.GetByID(id):Pos()
 	-- reload settings
 	fai_update_settings()
 	-- reset variables
-	vai_mode[id] = -1; vai_smode[id]=0
-	vai_timer[id] = math.random(1,10)
+	vai_mode[id]=-1; vai_smode[id]=0
+	vai_timer[id]=math.random(1,10)
 	vai_destx[id]=0; vai_desty[id]=0
-	vai_aimx[id]=pos.x-50+math.random(0,100)
-	vai_aimy[id]=pos.y-50+math.random(0,100)
-	vai_px[id]=pos.x
-	vai_py[id]=pos.y
+	vai_aimx[id]=_player(id,"x")-50+math.random(0,100)
+	vai_aimy[id]=_player(id,"y")-50+math.random(0,100)
+	vai_px[id]=_player(id,"x")
+	vai_py[id]=_player(id,"y")
 	vai_target[id]=0
 	vai_reaim[id]=0; vai_rescan[id]=0
 	vai_itemscan[id]=1000
@@ -69,9 +68,7 @@ end
 -- This function is called by CS2D automatically for each *LIVING* bot each frame
 -- Parameter: id = player ID of the bot
 function ai_update_living(id)
-	print("ai_update_living: ".. id)
-	local ply = player.GetByID(id)
-	
+		
 	-- Engage / Aim
 	fai_engage(id)
 	
@@ -84,12 +81,12 @@ function ai_update_living(id)
 		end
 	end
 	
-	if ply:Health()>0 and ply:Team()>0 then
+	if _player(id,"health")>0 and _player(id,"team")>0 then
 		
 		-- Collect Items
 		fai_collect(id)
 		
-		if ply:Health()>0 and ply:Team()>0 then
+		if _player(id,"health")>0 and _player(id,"team")>0 then
 			
 			ai_debug(id,"m:"..vai_mode[id]..", sm:"..vai_smode[id].." t:"..vai_target[id])
 			
@@ -129,14 +126,12 @@ function ai_update_living(id)
 
 			elseif vai_mode[id]==4 then
 				-- 4: FIGHT -----------------------------------------------> fight
-				local target = player.GetByID(vai_target[id])
-				
-				if target ~= nil then
-					if target:Health()>0 then
+				if _player(vai_target[id],"exists") then
+					if _player(vai_target[id],"health")>0 then
 						-- Melee Combat?
-						if target:GetActiveWeapon():Range()<50 then
+						if itemtype(_player(id,"weapontype"),"range")<50 then
 							-- Yes, melee! Run to target
-							if ai_goto(id,target:Tile().x,target:Tile().y)~=2 then
+							if ai_goto(id,_player(vai_target[id],"tilex"),_player(vai_target[id],"tiley"))~=2 then
 								vai_mode[id]=0
 							end
 						else
@@ -147,8 +142,8 @@ function ai_update_living(id)
 								vai_smode[id]=math.random(0,360)
 								-- Hunt?
 								if math.random(1,2)==1 then
-									if ply:Health()>50 then
-										if math.abs(ply:Pos().x-target:Pos().x)>230 and math.abs(ply:Pos().y-target:Pos().y)>180 then
+									if _player(id,"health")>50 then
+										if math.abs(_player(id,"x")-_player(vai_target[id],"x"))>230 and math.abs(_player(id,"y")-_player(vai_target[id],"y"))>180 then
 											vai_mode[id]=5
 											vai_smode[id]=vai_target[id]
 										end
@@ -173,10 +168,9 @@ function ai_update_living(id)
 
 			elseif vai_mode[id]==5 then
 				-- 5: HUNT -----------------------------------------------> hunt
-				local target = player.GetByID(vai_smode[id])
-				if target ~= nil then
-					if target:Health()>0 then
-						if ai_goto(id,target:Tile().x,target:Tile().y)~=2 then
+				if _player(vai_smode[id],"exists") then
+					if _player(vai_smode[id],"health")>0 then
+						if ai_goto(id,_player(vai_smode[id],"tilex"),_player(vai_smode[id],"tiley"))~=2 then
 							vai_mode[id]=0
 						end
 						return
@@ -196,10 +190,9 @@ function ai_update_living(id)
 				
 			elseif vai_mode[id]==7 then
 				-- 7: FOLLOW -----------------------------------------------> follow
-				local target = player.GetByID(vai_smode[id])
-				if target ~= nil then
-					if target:Health()>0 then
-						ai_goto(id,target:Tile().x,target:Tile().y)
+				if _player(vai_smode[id],"exists") then
+					if _player(vai_smode[id],"health")>0 then
+						ai_goto(id,_player(vai_smode[id],"tilex"),_player(vai_smode[id],"tiley"))
 						fai_walkaim(id)
 						return
 					end
@@ -222,8 +215,8 @@ function ai_update_living(id)
 					for i=1,#h do
 						if hostage(h[i],"health")>0 and hostage(h[i],"follow")==0 then
 							-- Close enough? Use!
-							if math.abs(ply:Pos().x-hostage(h[i],"x"))<=15 and math.abs(ply:Pos().y-hostage(h[i],"y"))<=15 then
-								ai_rotate(id,fai_angleto(ply:Pos().x,ply:Pos().y,hostage(h[i],"x"),hostage(h[i],"y")))
+							if math.abs(_player(id,"x")-hostage(h[i],"x"))<=15 and math.abs(_player(id,"y")-hostage(h[i],"y"))<=15 then
+								ai_rotate(id,fai_angleto(_player(id,"x"),_player(id,"y"),hostage(h[i],"x"),hostage(h[i],"y")))
 								ai_use(id)
 								break
 							end
@@ -234,9 +227,9 @@ function ai_update_living(id)
 					if vai_destx[id]==-100 then
 						-- None found? Switch to rescue
 						vai_smode[id]=1
-						vai_destx[id],vai_desty[id]=randomentity(4) -- info_rescuepoint
+						vai_destx[id],vai_desty[id]=random_entity(4) -- info_rescuepoint
 						if vai_destx[id]==-100 then
-							vai_destx[id],vai_desty[id]=randomentity(1) -- info_ct
+							vai_destx[id],vai_desty[id]=random_entity(1) -- info_ct
 						end
 					end
 				else
@@ -255,12 +248,12 @@ function ai_update_living(id)
 
 			elseif vai_mode[id]==51 then
 				-- 51: PLANT ----------------------------------------------> plant bomb
-				if ply:HasBomb() then
+				if _player(id,"bomb") then
 					-- On bombspot?
-					if tile.Entity(ply:Tile().x,ply:Tile().y):Type()~=0 then
-						if inentityzone(ply:Tile().x,ply:Tile().y,5) then
+					if _tile(_player(id,"tilex"),_player(id,"tiley"),"entity")~=0 then
+						if inentityzone(_player(id,"tilex"),_player(id,"tiley"),5) then
 							-- Bomb selected?
-							if ply:GetActiveWeapon()~=55 then
+							if _player(id,"weapontype")~=55 then
 								-- Select bomb!
 								ai_selectweapon(id,55)
 							else
@@ -276,7 +269,7 @@ function ai_update_living(id)
 					end
 					-- Not on bombspot -> Goto bombspot!
 					if ai_goto(id,vai_destx[id],vai_desty[id])~=2 then
-						vai_destx[id],vai_desty[id]=randomentity(5) -- info_bombspot
+						vai_destx[id],vai_desty[id]=random_entity(5) -- info_bombspot
 					else
 						fai_walkaim(id)
 					end
@@ -290,18 +283,19 @@ function ai_update_living(id)
 				if vai_smode[id]==0 then
 					-- Check Bombspot
 					if ai_goto(id,vai_destx[id],vai_desty[id])~=2 then
-						vai_destx[id],vai_desty[id]=randomentity(5,0) -- info_bombspot
+						vai_destx[id],vai_desty[id]=random_entity(5,0) -- info_bombspot
 					else
 						fai_walkaim(id)
 					end
 					-- Close to spot? Check
-					if math.abs(ply:Tile().x-vai_destx[id])<7 and math.abs(ply:Tile().y-vai_desty[id])<7 then
-						for k, v in pairs(entity.GetAll()) do
-							if v:Type()==63 then
-								if math.abs(ply:Tile().x-v:Pos().x)<10 and math.abs(ply:Tile().y-v:Pos().y)<10 then
+					if math.abs(_player(id,"tilex")-vai_destx[id])<7 and math.abs(_player(id,"tiley")-vai_desty[id])<7 then
+						local it=_item(0,"table")
+						for i=1,#it do
+							if _item(it[i],"type")==63 then
+								if math.abs(_player(id,"tilex")-_item(it[i],"x"))<10 and math.abs(_player(id,"tiley")-_item(it[i],"y"))<10 then
 									-- Bomb at spot!
-									vai_destx[id]=v:Pos().x
-									vai_desty[id]=v:Pos().y
+									vai_destx[id]=_item(it[i],"x")
+									vai_desty[id]=_item(it[i],"y")
 									vai_smode[id]=1
 									return
 								end
@@ -311,13 +305,16 @@ function ai_update_living(id)
 						setentityaistate(vai_destx[id],vai_desty[id],1)
 						print "SECTOR CLEAR!"
 						ai_radio(id,5) -- sector clear!
-						for k, v in pairs(player.GetBots()) do
-							if vai_mode[v:UserID()]==52 and vai_destx[v:UserID()]==vai_destx[id] and vai_desty[v:UserID()]==vai_desty[id] then
-								vai_destx[v:UserID()],vai_desty[v:UserID()]=randomentity(5,0)
-								vai_smode[v:UserID()]=0
+						local bots=_player(0,"table")
+						for i=1,#bots do
+							if _player(bots[i],"bot")==1 then
+								if vai_mode[bots[i]]==52 and vai_destx[bots[i]]==vai_destx[id] and vai_desty[bots[i]]==vai_desty[id] then
+									vai_destx[bots[i]],vai_desty[bots[i]]=random_entity(5,0)
+									vai_smode[bots[i]]=0
+								end
 							end
 						end
-						vai_destx[id],vai_desty[id]=randomentity(5,0) -- info_bombspot
+						vai_destx[id],vai_desty[id]=random_entity(5,0) -- info_bombspot
 						return
 					end
 				else
@@ -355,7 +352,7 @@ end
 -- Parameter: id = player ID of the bot
 function ai_update_dead(id)
 	-- Try to respawn (if not in normal gamemode)
-	if vai_set_gm ~= 0 then
+	if vai_set_gm~=0 then
 		ai_respawn(id)
 	end
 end
@@ -369,11 +366,12 @@ function ai_hear_radio(source,radio)
 	-- Bomb planted!
 	if radio==4 then
 		-- Every CT will try to defuse!
-		for k, v in player.GetBots() do
-			if v:Team()==2 then
-				if vai_mode[v:UserID()]~=52 then
-					vai_destx[v:UserID()],vai_desty[v:UserID()]=randomentity(5,0)
-					vai_mode[v:UserID()]=52; vai_smode[v:UserID()]=0; vai_timer[v:UserID()]=0
+		local bots=_player(0,"table")
+		for i=1,#bots do
+			if _player(bots[i],"bot")==1 and _player(bots[i],"team")==2 then
+				if vai_mode[bots[i]]~=52 then
+					vai_destx[bots[i]],vai_desty[bots[i]]=random_entity(5,0)
+					vai_mode[bots[i]]=52; vai_smode[bots[i]]=0; vai_timer[bots[i]]=0
 				end
 			end
 		end
@@ -392,13 +390,16 @@ function ai_hear_radio(source,radio)
 			if math.random(1,2)==1 then vai_radioanswer[mate]=0 else vai_radioanswer[mate]=28 end
 			vai_radioanswert[mate]=math.random(35,100)
 			vai_mode[mate]=2
-			vai_destx[mate]=ply:Tile().x
-			vai_desty[mate]=ply:Tile().y
+			vai_destx[mate]=_player(source,"tilex")
+			vai_desty[mate]=_player(source,"tiley")
 		end
 	-- Regroup Team (stop following)
 	elseif radio==24 then
+		local team=_player(source,"team")
+		if team>2 then team=2 end
+		local mates=_player(0,"team"..team.."living")
 		local c=1
-		for mate=1,team.NumPlayersLiving(ply:Team()) do
+		for mate=1,#mates do
 			if vai_mode[mate]==7 then
 				if math.random(1,2)==1 then vai_radioanswer[mate]=0 else vai_radioanswer[mate]=28 end
 				vai_radioanswert[mate]=math.random(50,55)*c
@@ -416,8 +417,11 @@ function ai_hear_radio(source,radio)
 		end
 	-- Team Fall Back / Go Go Go / Stick Together / Storm the Front / You take the point
 	elseif radio==10 or radio==15 or radio==30 or radio==31 or radio==32 then
+		local team=_player(source,"team")
+		if team>2 then team=2 end
+		local mates=_player(0,"team"..team.."living")
 		local c=1
-		for mate=1,team.NumPlayersLiving(ply:Team()) do
+		for mate=1,#mates do
 			if vai_mode[mate]==1 or vai_mode[mate]==7 then
 				if math.random(1,2)==1 then vai_radioanswer[mate]=0 else vai_radioanswer[mate]=28 end
 				vai_radioanswert[mate]=math.random(50,55)*c

@@ -1,8 +1,7 @@
 
 -- Find destination / mode
 function fai_decide(id)
-	local ply = player.GetByID(id)
-	local team=ply:Team()
+	local team=_player(id,"team")
 	
 	-- Buy?!
 	if vai_buyingdone[id]~=1 then
@@ -19,7 +18,7 @@ function fai_decide(id)
 			local r=math.random(1,3)
 			if r<=2 then
 				-- Goto CT Spawn / Botnode
-				if map.GetBotNodes()>0 and math.random(0,2)==1 then
+				if _map("botnodes")>0 and math.random(0,2)==1 then
 					vai_destx[id],vai_desty[id]=randomentity(19) -- info_botnode
 					vai_mode[id]=2
 				else
@@ -40,7 +39,7 @@ function fai_decide(id)
 				vai_mode[id]=2
 			else
 				-- Goto CT Spawn / Botnode
-				if map.GetBotNodes()>0 and math.random(0,2)==1 then
+				if _map("botnodes")>0 and math.random(0,2)==1 then
 					vai_destx[id],vai_desty[id]=randomentity(19) -- info_botnode
 					vai_mode[id]=2
 				else
@@ -54,7 +53,7 @@ function fai_decide(id)
 	else
 		------------------------------------------ Other Game Modes
 		
-		if map.GetVips()>0 then
+		if _map("mission_vips")>0 then
 			print "VIP MISSION!"
 			--------------------------------------- AS_ Maps
 			if team==1 then
@@ -66,7 +65,7 @@ function fai_decide(id)
 					vai_mode[id]=2
 				elseif r==2 then
 					-- Goto CT Spawn / Botnode
-					if map.GetBotNodes()>0 and math.random(0,2)==1 then
+					if _map("botnodes")>0 and math.random(0,2)==1 then
 						vai_destx[id],vai_desty[id]=randomentity(19) -- info_botnode
 						vai_mode[id]=2
 					else
@@ -87,7 +86,7 @@ function fai_decide(id)
 					vai_mode[id]=2
 				else
 					-- Goto T Spawn / Botnode
-					if map.GetBotNodes()>0 and math.random(0,2)==1 then
+					if _map("botnodes")>0 and math.random(0,2)==1 then
 						vai_destx[id],vai_desty[id]=randomentity(19) -- info_botnode
 						vai_mode[id]=2
 					else
@@ -97,7 +96,7 @@ function fai_decide(id)
 				end
 			elseif team==3 then
 				------------------- VIP
-				if map.GetBotNodes()>0 and math.random(0,2)==1 then
+				if _map("botnodes")>0 and math.random(0,2)==1 then
 					-- Goto Botnode
 					vai_destx[id],vai_desty[id]=randomentity(19) -- info_botnode
 					vai_mode[id]=2
@@ -108,7 +107,7 @@ function fai_decide(id)
 				end
 			end
 			
-		elseif map.GetHostages()>0 then
+		elseif _map("mission_hostages")>0 then
 			--------------------------------------- CS_ Maps
 			if team==1 then
 				------------------- Terrorists
@@ -119,7 +118,7 @@ function fai_decide(id)
 					vai_mode[id]=2
 				elseif r==2 then
 					-- Goto CT Spawn / Botnode
-					if map.GetBotNodes()>0 and math.random(0,2)==1 then
+					if _map("botnodes")>0 and math.random(0,2)==1 then
 						vai_destx[id],vai_desty[id]=randomentity(19) -- info_botnode
 						vai_mode[id]=2
 					else
@@ -136,7 +135,7 @@ function fai_decide(id)
 				local r=math.random(1,5)
 				if r==1 then
 					-- Goto T Spawn / Botnode
-					if map.GetBotNodes()>0 and math.random(0,2)==1 then
+					if _map("botnodes")>0 and math.random(0,2)==1 then
 						vai_destx[id],vai_desty[id]=randomentity(19) -- info_botnode
 						vai_mode[id]=2
 					else
@@ -150,7 +149,7 @@ function fai_decide(id)
 				end
 			end
 				
-		elseif map.GetBombSpots()>0 then
+		elseif _map("mission_bombspots")>0 then
 			--------------------------------------- DE_ Maps
 			if team==1 then
 				------------------- Terrorists
@@ -158,14 +157,14 @@ function fai_decide(id)
 				if r==1 then
 					-- Goto Bombspot
 					vai_destx[id],vai_desty[id]=randomentity(5) -- info_bombspot
-					if ply:HasBomb() then
+					if _player(id,"bomb") then
 						vai_mode[id]=51; vai_smode[id]=0; vai_timer[id]=0
 					else
 						vai_mode[id]=2
 					end
 				else
 					-- Goto CT Spawn / Botnode
-					if map.GetBotNodes()>0 and math.random(0,2)==1 then
+					if _map("botnodes")>0 and math.random(0,2)==1 then
 						vai_destx[id],vai_desty[id]=randomentity(19) -- info_botnode
 						vai_mode[id]=2
 					else
@@ -175,7 +174,7 @@ function fai_decide(id)
 				end
 			else
 				------------------- Counter-Terrorists
-				if game.BombPlanted() then
+				if _game("bombplanted") then
 					-- Find & Defuse Bomb
 					vai_destx[id],vai_desty[id]=randomentity(5,0)
 					vai_mode[id]=52; vai_smode[id]=0
@@ -187,7 +186,7 @@ function fai_decide(id)
 						vai_mode[id]=2
 					else
 						-- Goto T Spawn / Botnode
-						if map.GetBotNodes()>0 and math.random(0,2)==1 then
+						if _map("botnodes")>0 and math.random(0,2)==1 then
 							vai_destx[id],vai_desty[id]=randomentity(19) -- info_botnode
 							vai_mode[id]=2
 						else
@@ -198,13 +197,12 @@ function fai_decide(id)
 				end
 			end
 		
-		elseif map.GetCtfFlags()>0 then
+		elseif _map("mission_ctfflags")>0 then
 			--------------------------------------- CTF_ Maps
 			if team==1 then
 				------------------- Terrorists
-				if ply:HasFlag() then
-					local ent = entity.GetByPos(ply:Tile().x, ply:Tile().y)
-					if ent:Type()==15 and ent:Int0()==1 then
+				if _player(id,"flag") then
+					if _entity(_player(id,"tilex"),_player(id,"tiley"),"type")==15 and _entity(_player(id,"tilex"),_player(id,"tiley"),"int0")==0 then
 						-- Can't return! Retry!
 						vai_mode[id]=3
 						vai_timer[id]=math.random(150,300)
@@ -222,7 +220,7 @@ function fai_decide(id)
 						vai_mode[id]=2
 					else
 						-- Goto CT Spawn / Botnode
-						if map.GetBotNodes()>0 and math.random(0,2)==1 then
+						if _map("botnodes")>0 and math.random(0,2)==1 then
 							vai_destx[id],vai_desty[id]=randomentity(19) -- info_botnode
 							vai_mode[id]=2
 						else
@@ -233,9 +231,8 @@ function fai_decide(id)
 				end
 			else
 				------------------- Counter-Terrorists
-				if ply:HasFlag() then
-					local ent = entity.GetByPos(ply:Tile().x, ply:Tile().y)
-					if ent:Type()==15 and ent:Int0()==1 then
+				if _player(id,"flag") then
+					if _entity(_player(id,"tilex"),_player(id,"tiley"),"type")==15 and _entity(_player(id,"tilex"),_player(id,"tiley"),"int0")==1 then
 						-- Can't return! Retry!
 						vai_mode[id]=3
 						vai_timer[id]=math.random(150,300)
@@ -253,7 +250,7 @@ function fai_decide(id)
 						vai_mode[id]=2
 					else
 						-- Goto T Spawn / Botnode
-						if map.GetBotNodes()>0 and math.random(0,2)==1 then
+						if _map("botnodes")>0 and math.random(0,2)==1 then
 							vai_destx[id],vai_desty[id]=randomentity(19) -- info_botnode
 							vai_mode[id]=2
 						else
@@ -264,7 +261,7 @@ function fai_decide(id)
 				end
 			end
 		
-		elseif map.GetDomPoints()>0 then
+		elseif _map("mission_dompoints")>0 then
 			--------------------------------------- DOM_ Maps
 			if team==1 then
 				------------------- Terrorists
@@ -291,7 +288,7 @@ function fai_decide(id)
 				local r=math.random(1,3)
 				if r<=2 then
 					-- Goto CT Spawn / Botnode
-					if map.GetBotNodes()>0 and math.random(0,2)==1 then
+					if _map("botnodes")>0 and math.random(0,2)==1 then
 						vai_destx[id],vai_desty[id]=randomentity(19) -- info_botnode
 						vai_mode[id]=2
 					else
@@ -308,7 +305,7 @@ function fai_decide(id)
 				local r=math.random(1,3)
 				if r<=2 then
 					-- Goto T Spawn / Botnode
-					if map.GetBotNodes()>0 and math.random(0,2)==1 then
+					if _map("botnodes")>0 and math.random(0,2)==1 then
 						vai_destx[id],vai_desty[id]=randomentity(19) -- info_botnode
 						vai_mode[id]=2
 					else

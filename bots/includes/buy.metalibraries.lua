@@ -1,14 +1,12 @@
 
 function fai_buy(id)
-	local ply = player.GetByID(id)
-	
 	-- Wait
 	if vai_timer[id]>0 then
 		-- decrease
 		vai_timer[id]=vai_timer[id]-1
 	else
 		-- waiting done
-		local money=ply:Money()
+		local money=_player(id,"money")
 		-- Steps
 		if vai_smode[id]==0 then		
 			-- Step 0: primary weapon
@@ -19,7 +17,7 @@ function fai_buy(id)
 					local r=math.random(0,3)
 					if r==0 then ai_buy(id,10) end --m3
 					if r==1 then
-						if ply:Team()==1 then ai_buy(id,21) else ai_buy(id,23) end -- tmp/mac
+						if _player(id,"team")==1 then ai_buy(id,21) else ai_buy(id,23) end -- tmp/mac
 					end
 					if r==2 then ai_buy(id,24) end -- ump45
 					if r==3 then ai_buy(id,20) end -- mp5
@@ -28,20 +26,20 @@ function fai_buy(id)
 					-- buy medium price weapon
 					local r=math.random(0,3)
 					if r<=1 then
-						if ply:Team()==1 then ai_buy(id,30) else ai_buy(id,32) end -- ak47/m4a1
+						if _player(id,"team")==1 then ai_buy(id,30) else ai_buy(id,32) end -- ak47/m4a1
 					end
 					if r==2 then
-						if ply:Team()==1 then ai_buy(id,38) else ai_buy(id,39) end -- galil/famas
+						if _player(id,"team")==1 then ai_buy(id,38) else ai_buy(id,39) end -- galil/famas
 					end
 					if r==3 then
-						if ply:Team()==1 then ai_buy(id,31) else ai_buy(id,33) end -- sg552/aug
+						if _player(id,"team")==1 then ai_buy(id,31) else ai_buy(id,33) end -- sg552/aug
 					end
 					
 				elseif money>=6000 then
 					-- buy high price weapon
 					local r=math.random(0,3)
 					if r<=1 then
-						if ply:Team()==1 then ai_buy(id,30) else ai_buy(id,32) end -- ak47/m4a1
+						if _player(id,"team")==1 then ai_buy(id,30) else ai_buy(id,32) end -- ak47/m4a1
 					end
 					if r==2 then ai_buy(id,35) end -- awp
 					if r==3 then ai_buy(id,40) end -- m249					
@@ -84,7 +82,7 @@ function fai_buy(id)
 					end
 				end
 				if not hasthistype then
-					if ply:Team()==1 then
+					if _player(id,"team")==1 then
 						if money>=2350 then
 							r=math.random(0,3)
 							if r==0 then ai_buy(id,20) end -- mp5
@@ -118,7 +116,7 @@ function fai_buy(id)
 					end
 				end
 				if not hasthistype then
-					if ply:Team()==1 then
+					if _player(id,"team")==1 then
 						if money>=3500 then
 							r=math.random(0,2)
 							if r==0 then ai_buy(id,30) end -- ak47
