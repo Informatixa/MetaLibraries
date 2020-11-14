@@ -1,0 +1,174 @@
+	--[[function ai_respawn(id)
+		if MetaLibraries.GetHook('ai_respawn') ~= nil then
+			for k, v in pairs(MetaLibraries.GetHook('ai_respawn')) do
+				v.func(public.ext_player.GetByID(id))
+			end
+		end
+	end
+
+	function ai_buy(id, wpn)
+		if MetaLibraries.GetHook('ai_buy') ~= nil then
+			for k, v in pairs(MetaLibraries.GetHook('ai_buy')) do
+				local r = v.func(public.ext_player.GetByID(id), public.ext_weapon.GetByType(wpn))
+				if r ~= nil then
+					return r
+				end
+			end
+		end
+	end
+
+	function ai_drop(id)
+		if MetaLibraries.GetHook('ai_drop') ~= nil then
+			for k, v in pairs(MetaLibraries.GetHook('ai_drop')) do
+				v.func(public.ext_player.GetByID(id))
+			end
+		end
+	end
+
+	function ai_selectweapon(id, type)
+		if MetaLibraries.GetHook('ai_selectweapon') ~= nil then
+			for k, v in pairs(MetaLibraries.GetHook('ai_selectweapon')) do
+				v.func(public.ext_player.GetByID(id), public.ext_weapon.GetByType(type))
+			end
+		end
+	end
+
+	function ai_reload(id)
+		if MetaLibraries.GetHook('ai_reload') ~= nil then
+			for k, v in pairs(MetaLibraries.GetHook('ai_reload')) do
+				v.func(public.ext_player.GetByID(id), mode)
+			end
+		end
+	end
+
+	function ai_attack(id, secondary)
+		if tobool(secondary) then
+			if MetaLibraries.GetHook('ai_attack2') ~= nil then
+				for k, v in pairs(MetaLibraries.GetHook('ai_attack2')) do
+					v.func(public.ext_player.GetByID(id))
+				end
+			end
+		else
+			if MetaLibraries.GetHook('ai_attack') ~= nil then
+				for k, v in pairs(MetaLibraries.GetHook('ai_attack')) do
+					v.func(public.ext_player.GetByID(id))
+				end
+			end
+		end
+	end
+
+	function ai_move(id, angle, walk)
+		if MetaLibraries.GetHook('ai_move') ~= nil then
+			for k, v in pairs(MetaLibraries.GetHook('ai_move')) do
+				v.func(public.ext_player.GetByID(id), angle, walk)
+			end
+		end
+	end
+
+	function ai_use(id)
+		if MetaLibraries.GetHook('ai_use') ~= nil then
+			for k, v in pairs(MetaLibraries.GetHook('ai_use')) do
+				v.func(public.ext_player.GetByID(id))
+			end
+		end
+	end
+
+	function ai_say(id, message)
+		local ply = public.ext_player.GetByID(id)
+
+		if MetaLibraries.GetHook('ia_say') ~= nil then
+			for k, v in pairs(MetaLibraries.GetHook('ia_say')) do
+				v.func(ply, message)
+			end
+		end
+	end
+
+	function ai_sayteam(id, message)
+		local ply = public.ext_player.GetByID(id)
+
+		if MetaLibraries.GetHook('ai_sayteam') ~= nil then
+			for k, v in pairs(MetaLibraries.GetHook('ai_sayteam')) do
+				v.func(ply, message)
+			end
+		end
+	end
+
+	function ai_radio(id, message)
+		if MetaLibraries.GetHook('ai_radio') ~= nil then
+			for k, v in pairs(MetaLibraries.GetHook('ai_radio')) do
+				v.func(public.ext_player.GetByID(id), message)
+			end
+		end
+	end
+
+	function ai_spray(id)
+		if MetaLibraries.GetHook('ai_spray') ~= nil then
+			for k, v in pairs(MetaLibraries.GetHook('ai_spray')) do
+				v.func(public.ext_player.GetByID(id))
+			end
+		end
+	end
+	
+	function ai_build(id, type, x, y)
+		if MetaLibraries.GetHook('ai_build') ~= nil then
+			for k, v in pairs(MetaLibraries.GetHook('ai_build')) do
+				v.func(public.ext_player.GetByID(id), type, x, y)
+			end
+		end
+	end
+
+	function ai_rotate(id, angle)
+		if MetaLibraries.GetHook('ai_rotate') ~= nil then
+			for k, v in pairs(MetaLibraries.GetHook('ai_rotate')) do
+				v.func(public.ext_player.GetByID(id), angle)
+			end
+		end
+	end
+
+	function ai_goto(id, x, y, walk)
+		if MetaLibraries.GetHook('ai_goto') ~= nil then
+			for k, v in pairs(MetaLibraries.GetHook('ai_goto')) do
+				v.func(public.ext_player.GetByID(id), x, y, walk)
+			end
+		end
+	end
+
+	function ai_debug(id, text)
+		if MetaLibraries.GetHook('ai_debug') ~= nil then
+			for k, v in pairs(MetaLibraries.GetHook('ai_debug')) do
+				v.func(public.ext_player.GetByID(id), text)
+			end
+		end
+	end
+
+	function ai_iattack(id)
+		if MetaLibraries.GetHook('ai_iattack') ~= nil then
+			for k, v in pairs(MetaLibraries.GetHook('ai_iattack')) do
+				v.func(public.ext_player.GetByID(id))
+			end
+		end
+	end
+
+	function ai_aim(id, x, y)
+		if MetaLibraries.GetHook('ai_aim') ~= nil then
+			for k, v in pairs(MetaLibraries.GetHook('ai_aim')) do
+				v.func(public.ext_player.GetByID(id), x, y)
+			end
+		end
+	end
+
+	function ai_freeline(id, x, y)
+		if MetaLibraries.GetHook('ai_freeline') ~= nil then
+			for k, v in pairs(MetaLibraries.GetHook('ai_freeline')) do
+				v.func(public.ext_player.GetByID(id), x, y)
+			end
+		end
+	end
+
+	function ai_findtarget(id)
+		if MetaLibraries.GetHook('ai_findtarget') ~= nil then
+			for k, v in pairs(MetaLibraries.GetHook('ai_findtarget')) do
+				v.func(public.ext_player.GetByID(id))
+			end
+		end
+	end--]]
