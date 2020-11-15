@@ -26,49 +26,49 @@ local function pif(public, name, path)
   print('�255220000Loading MetaLibraries.')
   print('�255220000Version: '.. MetaLibrariesVersion)
 
-  public.enum_armor_type     = import(METALIBDIR ..'/enum/armor_types.lua')
-  public.enum_gamemode       = import(METALIBDIR ..'/enum/gamemodes.lua')
-  public.enum_hook           = import(METALIBDIR ..'/enum/hooks.lua')
-  public.enum_item           = import(METALIBDIR ..'/enum/items.lua')
-  public.enum_object         = import(METALIBDIR ..'/enum/object.lua')
-  public.enum_print_type     = import(METALIBDIR ..'/enum/print_types.lua')
-  public.enum_supply_mode    = import(METALIBDIR ..'/enum/supply_modes.lua')
-  public.enum_team           = import(METALIBDIR ..'/enum/teams.lua')
-  public.enum_text_align     = import(METALIBDIR ..'/enum/text_align.lua')
-  public.ext_string          = import(METALIBDIR ..'/extensions/string.lua')
-  public.string              = public.ext_string
-  public.ext_table           = import(METALIBDIR ..'/extensions/table.lua')
-  public.table               = public.ext_table
-  public.util                = import(METALIBDIR ..'/util.lua')
-  public.mod_hook            = import(METALIBDIR ..'/modules/hook.lua')
-  public.hook                = public.mod_hook
-  public.mod_concommand      = import(METALIBDIR ..'/modules/concommand.lua')
-  public.concommand          = public.mod_concommand
-  public.mod_chatcommand     = import(METALIBDIR ..'/modules/chatcommand.lua')
-  public.chatcommand         = public.mod_chatcommand
-  public.mod_file            = import(METALIBDIR ..'/modules/file.lua')
-  public.file                = public.mod_file
-  public.mod_ini             = import(METALIBDIR ..'/modules/ini.lua')
-  public.ini                 = public.mod_ini
-  public.mod_server_settings = import(METALIBDIR ..'/modules/server_settings.lua')
-  public.server_settings     = public.mod_server_settings
-  public.ext_convert         = import(METALIBDIR ..'/extensions/convert.lua')
-  public.convert             = public.ext_convert
-  public.ext_entity          = import(METALIBDIR ..'/extensions/entity.lua')
-  public.entity              = public.ext_entity
-  public.ext_game            = import(METALIBDIR ..'/extensions/game.lua')
-  public.game                = public.ext_game
-  public.ext_gamemode        = import(METALIBDIR ..'/extensions/gamemode.lua')
-  public.gamemode            = ext_gamemode
-  --[[public.ext_item = import(METALIBDIR ..'/extensions/item.lua')
-  public.ext_item_networked = import(METALIBDIR ..'/extensions/item_networked.lua')--]]
-  public.ext_map    = import(METALIBDIR ..'/extensions/map.lua')
-  public.map        = public.ext_map
-  public.ext_object = import(METALIBDIR ..'/extensions/object.lua')
-  public.object     = public.ext_object
-  public.ext_player = import(METALIBDIR ..'/extensions/player.lua')
-  public.player     = public.ext_player
-  --public.ext_menu = import(METALIBDIR ..'/extensions/menu.lua')
+  public.enum_armor_type      = import(METALIBDIR ..'/enum/armor_types.lua')
+  public.enum_gamemode        = import(METALIBDIR ..'/enum/gamemodes.lua')
+  public.enum_hook            = import(METALIBDIR ..'/enum/hooks.lua')
+  public.enum_item            = import(METALIBDIR ..'/enum/items.lua')
+  public.enum_object          = import(METALIBDIR ..'/enum/object.lua')
+  public.enum_print_type      = import(METALIBDIR ..'/enum/print_types.lua')
+  public.enum_supply_mode     = import(METALIBDIR ..'/enum/supply_modes.lua')
+  public.enum_team            = import(METALIBDIR ..'/enum/teams.lua')
+  public.enum_text_align      = import(METALIBDIR ..'/enum/text_align.lua')
+  public.ext_string           = import(METALIBDIR ..'/extensions/string.lua')
+  public.string               = public.ext_string
+  public.ext_table            = import(METALIBDIR ..'/extensions/table.lua')
+  public.table                = public.ext_table
+  public.util                 = import(METALIBDIR ..'/util.lua')
+  public.mod_hook             = import(METALIBDIR ..'/modules/hook.lua')
+  public.hook                 = public.mod_hook
+  public.mod_concommand       = import(METALIBDIR ..'/modules/concommand.lua')
+  public.concommand           = public.mod_concommand
+  public.mod_chatcommand      = import(METALIBDIR ..'/modules/chatcommand.lua')
+  public.chatcommand          = public.mod_chatcommand
+  public.mod_file             = import(METALIBDIR ..'/modules/file.lua')
+  public.file                 = public.mod_file
+  public.mod_ini              = import(METALIBDIR ..'/modules/ini.lua')
+  public.ini                  = public.mod_ini
+  public.mod_server_settings  = import(METALIBDIR ..'/modules/server_settings.lua')
+  public.server_settings      = public.mod_server_settings
+  public.ext_convert          = import(METALIBDIR ..'/extensions/convert.lua')
+  public.convert              = public.ext_convert
+  public.ext_entity           = import(METALIBDIR ..'/extensions/entity.lua')
+  public.entity               = public.ext_entity
+  public.ext_game             = import(METALIBDIR ..'/extensions/game.lua')
+  public.game                 = public.ext_game
+  public.ext_gamemode         = import(METALIBDIR ..'/extensions/gamemode.lua')
+  public.gamemode             = ext_gamemode
+  public.ext_item             = import(METALIBDIR ..'/extensions/item.lua')
+  public.ext_item_networked   = import(METALIBDIR ..'/extensions/item_networked.lua')
+  public.ext_map              = import(METALIBDIR ..'/extensions/map.lua')
+  public.map                  = public.ext_map
+  public.ext_object           = import(METALIBDIR ..'/extensions/object.lua')
+  public.object               = public.ext_object
+  public.ext_player           = import(METALIBDIR ..'/extensions/player.lua')
+  public.player               = public.ext_player
+  public.ext_menu             = import(METALIBDIR ..'/extensions/menu.lua')
   public.ext_player_networked = import(METALIBDIR ..'/extensions/player_networked.lua')
   public.ext_player_auth      = import(METALIBDIR ..'/extensions/player_auth.lua')
   public.ext_team             = import(METALIBDIR ..'/extensions/team.lua')
@@ -93,6 +93,7 @@ local function pif(public, name, path)
       end
     end
   end
+  addhook('second', 'MetaLibraries.OnMs100')
 
   function MetaLibraries.OnSecond()
     if MetaLibraries.GetHook('second') ~= nil then
@@ -131,6 +132,16 @@ local function pif(public, name, path)
     end
   end
   addhook('startround', 'MetaLibraries.OnStartRound')
+
+  function MetaLibraries.OnStartRoundPrespawn(mode)
+    if MetaLibrariesDebug then print('OnStartRoundPrespawn: '.. mode) end
+    if MetaLibraries.GetHook('startround_prespawn') ~= nil then
+      for k, v in pairs(MetaLibraries.GetHook('startround')) do
+        v.func(mode)
+      end
+    end
+  end
+  addhook('startround_prespawn', 'MetaLibraries.OnStartRoundPrespawn')
 
   function MetaLibraries.OnEndRound(mode)
     if MetaLibrariesDebug then print('OnEndRound: '.. mode) end
@@ -215,6 +226,16 @@ local function pif(public, name, path)
   end
   addhook('projectile', 'MetaLibraries.OnProjecTile')
 
+  function MetaLibraries.OnProjecTileImpact(id, wpn, x, y, mode, projectileid)
+    if MetaLibrariesDebug then print('OnProjecTileImpact: '.. id ..' '.. wpn ..' '.. x ..' '.. y ..' '.. mode ..' '.. projectileid) end
+    if MetaLibraries.GetHook('projectile_impact') ~= nil then
+      for k, v in pairs(MetaLibraries.GetHook('projectile_impact')) do
+        v.func(public.ext_player.GetByID(id), public.ext_weapon.GetByType(wpn), x, y, mode, projectileid)
+      end
+    end
+  end
+  addhook('projectile_impact', 'MetaLibraries.OnProjecTileImpact')
+
   function MetaLibraries.OnLog(text)
     if MetaLibraries.GetHook('log') ~= nil then
       for k, v in pairs(MetaLibraries.GetHook('log')) do
@@ -255,6 +276,16 @@ local function pif(public, name, path)
     end
   end
   addhook('clientdata', 'MetaLibraries.OnClientData')
+
+  function MetaLibraries.OnShutdown()
+    if MetaLibrariesDebug then print('OnShutdown:') end
+    if MetaLibraries.GetHook('shutdown') ~= nil then
+      for k, v in pairs(MetaLibraries.GetHook('shutdown')) do
+        v.func(public.ext_player.GetByID(id), mode, x, y)
+      end
+    end
+  end
+  addhook('shutdown', 'MetaLibraries.OnShutdown')
 
   --[Player]--
   function MetaLibraries.OnJoin(id)
@@ -412,6 +443,19 @@ local function pif(public, name, path)
     end
   end
   addhook('reload', 'MetaLibraries.OnReload')
+
+  function MetaLibraries.OnAssist(assist, victim, killer)
+    if MetaLibrariesDebug then print('OnAssist: '.. assist ..' '.. victim ..' '.. killer) end
+    if MetaLibraries.GetHook('assist') ~= nil then
+      for k, v in pairs(MetaLibraries.GetHook('assist')) do
+        local r v.func(public.ext_player.GetByID(assist), public.ext_player.GetByID(victim), public.ext_player.GetByID(killer))
+        if r ~= nil then
+          return r
+        end
+      end
+    end
+  end
+  addhook('assist', 'MetaLibraries.OnAssist')
 
   function MetaLibraries.OnFire(id)
     if MetaLibrariesDebug then print('OnFire: '.. id) end
@@ -706,17 +750,15 @@ local function pif(public, name, path)
   end
   addhook('menu', 'MetaLibraries.OnMenu')
 
-  if (public.ext_game.Version() == 'b 0.1.2.0') then
-    function MetaLibraries.OnFlashlight(id, state)
-      if MetaLibrariesDebug then print('OnFlashlight: '.. id ..' '.. state) end
-      if MetaLibraries.GetHook('flashlight') ~= nil then
-        for k, v in pairs(MetaLibraries.GetHook('flashlight')) do
-          v.func(public.ext_player.GetByID(id), state)
-        end
+  function MetaLibraries.OnFlashlight(id, state)
+    if MetaLibrariesDebug then print('OnFlashlight: '.. id ..' '.. state) end
+    if MetaLibraries.GetHook('flashlight') ~= nil then
+      for k, v in pairs(MetaLibraries.GetHook('flashlight')) do
+        v.func(public.ext_player.GetByID(id), state)
       end
     end
-    addhook('flashlight', 'MetaLibraries.OnFlashlight')
   end
+  addhook('flashlight', 'MetaLibraries.OnFlashlight')
 
   --[Object]--
   function MetaLibraries.OnObjectDamage(id, damage, ply)

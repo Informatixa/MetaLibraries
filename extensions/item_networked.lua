@@ -1,27 +1,35 @@
-local meta = FindMetaTable("Item")
-if not meta then return end
+local util = import(METALIBDIR ..'/util.lua')
+local mod_hook = import(METALIBDIR ..'/modules/hook.lua')
+local ext_item = import(METALIBDIR ..'/extensions/item.lua')
 
-item.Networked = {}
+MetaLibrariesConst.ItemNetworked = {}
 
-function meta:GetNetworked(name)
-  if item.Networked[self:ID()][name] ~= nil then
-    return item.Networked[self:ID()][name]
-  else
-    return nil
-  end
-end
+local function pif(public, name, path)
+  local private = {}
+  private.Item = util.FindMetaTable('Item')
 
-function meta:SetNetworked(name, value)
-  item.Networked[self:ID()][name] = value
-end
-
-hook.Add("always", "ItemNetworked", function()
-  for _, v in pairs(item.GetAll()) do
-    if item.Networked[v:ID()] == nil then
-      item.Networked[v:ID()] = {}
+  function private.Item:GetNetworked(name)
+    if MetaLibrariesConst.ItemNetworked[self:ID()] ~= nil and MetaLibrariesConst.ItemNetworked[self:ID()][name] ~= nil then
+      return MetaLibrariesConst.ItemNetworked[self:ID()][name]
+    else
+      return nil
     end
   end
-end)
+
+  function private.Item:SetNetworked(name, value)
+    MetaLibrariesConst.ItemNetworked[self:ID()][name] = value
+  end
+
+  mod_hook.Add('always', 'ItemNetworked', function()
+    for k, v in pairs(ext_item.GetAll()) do
+      if MetaLibrariesConst.ItemNetworked[v:ID()] == nil then
+        MetaLibrariesConst.ItemNetworked[v:ID()] = {}
+      end
+    end
+  end)
+end
+
+return pif
 
 --[[hook.Add("collect", "ItemNetworked", function(ply, i, type, ain, a, mode)
   item.Networked[i:ID()] = {}
